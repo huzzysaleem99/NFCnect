@@ -11,6 +11,8 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
@@ -149,6 +151,41 @@ button {
         CARD PRODUCTION
     </div>
 
+    <div id="loginSection">
+
+    <label for="adminEmail">
+        EMAIL
+    </label>
+
+    <input
+        id="adminEmail"
+        type="email"
+        placeholder="you@example.com"
+    >
+
+    <label
+        for="adminPassword"
+        style="margin-top:16px;"
+    >
+        PASSWORD
+    </label>
+
+    <input
+        id="adminPassword"
+        type="password"
+        placeholder="Password"
+    >
+
+    <button id="loginButton">
+        ADMIN LOGIN
+    </button>
+
+    <div class="status" id="loginStatus"></div>
+
+</div>
+
+    <div id="adminSection" style="display:none;">
+
     <label for="cardId">
         CARD ID
     </label>
@@ -177,6 +214,7 @@ button {
 
     <div class="profile-url" id="profileUrl"></div>
 </div>
+
 
     </div>
 
