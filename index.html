@@ -455,6 +455,17 @@ async function loadProfile() {
         document.getElementById("profile").style.display =
             "block";
 
+        const profileUrl = window.location.href;
+
+document.getElementById("qrcode").innerHTML = "";
+
+new QRCode(document.getElementById("qrcode"), {
+    text: profileUrl,
+    width: 160,
+    height: 160,
+    correctLevel: QRCode.CorrectLevel.H
+});
+
     } catch (error) {
 
         document.getElementById("loading").style.display = "none";
