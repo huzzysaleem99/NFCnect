@@ -186,21 +186,57 @@ button {
 
 <script>
 
-    function createCardId() {
+    const SUPABASE_URL =
+"https://qldzzuqdzoarboonnizn.supabase.co/rest/v1";
 
-    const characters = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+const SUPABASE_KEY =
+"sb_publishable_MOUxn_K0T9DpYe0ZZyk-TA_cMjATkVd";
 
-    let randomPart = "";
+   async function createCardId() {
 
-    for (let i = 0; i < 6; i++) {
-        randomPart += characters.charAt(
-            Math.floor(Math.random() * characters.length)
+    const characters =
+        "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+    let unique = false;
+    let cardId = "";
+
+    while (!unique) {
+
+        let randomPart = "";
+
+        for (let i = 0; i < 6; i++) {
+            randomPart += characters.charAt(
+                Math.floor(Math.random() * characters.length)
+            );
+        }
+
+        cardId = `VQ-${randomPart}`;
+
+        const response = await fetch(
+            `${SUPABASE_URL}/Profiles?card_id=eq.${encodeURIComponent(cardId)}&select=card_id`,
+            {
+                headers: {
+                    "apikey": SUPABASE_KEY
+                }
+            }
         );
+
+        if (!response.ok) {
+            alert("Unable to check Card ID.");
+            return;
+        }
+
+        const existing = await response.json();
+
+        if (existing.length === 0) {
+            unique = true;
+        }
     }
 
-    const cardId = `VQ-${randomPart}`;
-
     document.getElementById("cardId").value = cardId;
+
+    document.getElementById("status").innerText =
+        "Unique Card ID generated.";
 }
 
 
