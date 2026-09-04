@@ -133,7 +133,13 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
 "sb_publishable_MOUxn_K0T9DpYe0ZZyk-TA_cMjATkVd";
 
-const CARD_ID = "NFC-7H42K9";
+const pathParts = window.location.pathname.split("/").filter(Boolean);
+
+let CARD_ID = null;
+
+if (pathParts[0] === "c" && pathParts[1]) {
+    CARD_ID = pathParts[1];
+}
 
 async function loadProfile() {
 
