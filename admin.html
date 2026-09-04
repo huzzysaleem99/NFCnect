@@ -125,6 +125,16 @@ button {
     color: #c9a227;
 }
 
+    .secondary-button {
+    background: transparent;
+    color: #c9a227;
+    border: 1px solid rgba(201,162,39,0.55);
+}
+
+.secondary-button:hover {
+    background: rgba(201,162,39,0.08);
+}
+
 </style>
 
 </head>
@@ -149,6 +159,11 @@ button {
         placeholder="VQ-7H42K9"
     >
 
+    <button id="generateIdButton" class="secondary-button">
+    GENERATE CARD ID
+</button>
+    
+
     <button id="generateButton">
         GENERATE QR
     </button>
@@ -170,6 +185,28 @@ button {
 
 
 <script>
+
+    function createCardId() {
+
+    const characters = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+    let randomPart = "";
+
+    for (let i = 0; i < 6; i++) {
+        randomPart += characters.charAt(
+            Math.floor(Math.random() * characters.length)
+        );
+    }
+
+    const cardId = `VQ-${randomPart}`;
+
+    document.getElementById("cardId").value = cardId;
+}
+
+
+document
+    .getElementById("generateIdButton")
+    .addEventListener("click", createCardId);
 
 function generateQR() {
 
