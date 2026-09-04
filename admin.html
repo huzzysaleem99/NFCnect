@@ -186,6 +186,10 @@ button {
 
     <div id="adminSection" style="display:none;">
 
+        <button id="logoutButton" class="secondary-button">
+    LOG OUT
+</button>
+
     <label for="cardId">
         CARD ID
     </label>
@@ -510,7 +514,27 @@ document
     .getElementById("downloadQrButton")
     .addEventListener("click", downloadQR);
 
+async function logoutAdmin() {
 
+    await supabaseClient.auth.signOut();
+
+    document.getElementById("adminSection").style.display =
+        "none";
+
+    document.getElementById("loginSection").style.display =
+        "block";
+
+    document.getElementById("adminPassword").value =
+        "";
+
+    document.getElementById("loginStatus").innerText =
+        "Logged out successfully.";
+}
+
+document
+    .getElementById("logoutButton")
+    .addEventListener("click", logoutAdmin);
+    
 checkAdminSession();
 
 </script>
