@@ -195,40 +195,93 @@ button {
 
 </div>
 
-    <div id="adminSection" style="display:none;">
+ <div id="adminSection" style="display:none;">
 
-    <label for="cardId">
+    <div id="customerForm">
 
-        <div id="customerForm">
+        <label for="fullName">FULL NAME</label>
+        <input
+            id="fullName"
+            type="text"
+            placeholder="Customer name"
+        >
 
-    <label for="fullName">FULL NAME</label>
-    <input id="fullName" type="text" placeholder="Customer name">
+        <label for="jobTitle" style="margin-top:16px;">
+            JOB TITLE
+        </label>
+        <input
+            id="jobTitle"
+            type="text"
+            placeholder="Job title"
+        >
 
-    <label for="jobTitle" style="margin-top:16px;">JOB TITLE</label>
-    <input id="jobTitle" type="text" placeholder="Job title">
+        <label for="company" style="margin-top:16px;">
+            COMPANY
+        </label>
+        <input
+            id="company"
+            type="text"
+            placeholder="Company"
+        >
 
-    <label for="company" style="margin-top:16px;">COMPANY</label>
-    <input id="company" type="text" placeholder="Company">
+        <label for="phone" style="margin-top:16px;">
+            PHONE
+        </label>
+        <input
+            id="phone"
+            type="text"
+            placeholder="+44..."
+        >
 
-    <label for="phone" style="margin-top:16px;">PHONE</label>
-    <input id="phone" type="text" placeholder="+44...">
+        <label for="email" style="margin-top:16px;">
+            EMAIL
+        </label>
+        <input
+            id="email"
+            type="email"
+            placeholder="customer@example.com"
+        >
 
-    <label for="email" style="margin-top:16px;">EMAIL</label>
-    <input id="email" type="email" placeholder="customer@example.com">
+        <label for="website" style="margin-top:16px;">
+            WEBSITE
+        </label>
+        <input
+            id="website"
+            type="text"
+            placeholder="https://..."
+        >
 
-    <label for="website" style="margin-top:16px;">WEBSITE</label>
-    <input id="website" type="text" placeholder="https://...">
+        <label for="linkedin" style="margin-top:16px;">
+            LINKEDIN
+        </label>
+        <input
+            id="linkedin"
+            type="text"
+            placeholder="https://linkedin.com/..."
+        >
 
-    <label for="linkedin" style="margin-top:16px;">LINKEDIN</label>
-    <input id="linkedin" type="text" placeholder="https://linkedin.com/...">
+        <label for="instagram" style="margin-top:16px;">
+            INSTAGRAM
+        </label>
+        <input
+            id="instagram"
+            type="text"
+            placeholder="https://instagram.com/..."
+        >
 
-    <label for="instagram" style="margin-top:16px;">INSTAGRAM</label>
-    <input id="instagram" type="text" placeholder="https://instagram.com/...">
+        <label for="facebook" style="margin-top:16px;">
+            FACEBOOK
+        </label>
+        <input
+            id="facebook"
+            type="text"
+            placeholder="https://facebook.com/..."
+        >
 
-    <label for="facebook" style="margin-top:16px;">FACEBOOK</label>
-    <input id="facebook" type="text" placeholder="https://facebook.com/...">
+    </div>
 
-</div>
+
+    <label for="cardId" style="margin-top:22px;">
         CARD ID
     </label>
 
@@ -238,35 +291,49 @@ button {
         placeholder="VQ-7H42K9"
     >
 
-    <button id="generateIdButton" class="secondary-button">
-    GENERATE CARD ID
-</button>
+    <button
+        id="generateIdButton"
+        class="secondary-button"
+    >
+        GENERATE CARD ID
+    </button>
 
-        <button id="createCustomerButton">
-    CREATE CUSTOMER
-</button>
-    
+    <button id="createCustomerButton">
+        CREATE CUSTOMER
+    </button>
 
     <button id="generateButton">
         GENERATE QR
     </button>
 
+
+    <div class="status" id="status"></div>
+
+
     <div class="result" id="result">
-    <div id="qrcode"></div>
 
-    <button id="downloadQrButton">
-        DOWNLOAD QR
-    </button>
+        <div id="qrcode"></div>
 
-    <div class="profile-url" id="profileUrl"></div>
-</div>
+        <button id="downloadQrButton">
+            DOWNLOAD QR
+        </button>
 
-        <button id="logoutButton" class="secondary-button">
-    LOG OUT
-</button>
+        <div
+            class="profile-url"
+            id="profileUrl"
+        ></div>
 
     </div>
 
+
+    <button
+        id="logoutButton"
+        class="logout-button"
+    >
+        LOG OUT
+    </button>
+
+</div>
 </div>
 
 
