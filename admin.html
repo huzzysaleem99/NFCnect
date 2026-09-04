@@ -35,11 +35,11 @@ body {
 
 .panel {
     width: 100%;
-    max-width: 460px;
+    max-width: 1100px;
     background: #0d0d0d;
     border: 1px solid rgba(201,162,39,0.55);
     border-radius: 24px;
-    padding: 38px 28px;
+    padding: 38px 34px;
     text-align: center;
 }
 
@@ -153,6 +153,27 @@ button {
     padding-bottom: 30px;
     border-bottom: 1px solid rgba(201,162,39,0.18);
 }
+#adminSection {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    align-items: start;
+}
+
+#manageCustomerSection {
+    grid-column: 1 / -1;
+}
+
+#customerForm {
+    text-align: left;
+}
+
+.result {
+    text-align: center;
+}
+
+.logout-button {
+    grid-column: 1 / -1;
 }
 </style>
 
