@@ -175,6 +175,34 @@ button {
 .logout-button {
     grid-column: 1 / -1;
 }
+
+    #customerForm {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px 20px;
+    text-align: left;
+}
+
+#customerForm label {
+    margin-top: 0 !important;
+}
+
+#customerForm input {
+    margin-bottom: 0;
+}
+
+/* Each label + input needs to stay together */
+.form-field {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Mobile */
+@media (max-width: 750px) {
+    #customerForm {
+        grid-template-columns: 1fr;
+    }
+}
 </style>
 
 </head>
