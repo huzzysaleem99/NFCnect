@@ -297,6 +297,48 @@ document
     .getElementById("generateButton")
     .addEventListener("click", generateQR);
 
+    function downloadQR() {
+
+    const qrContainer =
+        document.getElementById("qrcode");
+
+    const canvas =
+        qrContainer.querySelector("canvas");
+
+    const image =
+        qrContainer.querySelector("img");
+
+    let dataUrl = "";
+
+    if (canvas) {
+        dataUrl = canvas.toDataURL("image/png");
+    } else if (image) {
+        dataUrl = image.src;
+    } else {
+        alert("Generate a QR code first.");
+        return;
+    }
+
+    const cardId =
+        document
+            .getElementById("cardId")
+            .value
+            .trim();
+
+    const link = document.createElement("a");
+
+    link.href = dataUrl;
+    link.download = `${cardId || "VEUQO"}-QR.png`;
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+document
+    .getElementById("downloadQrButton")
+    .addEventListener("click", downloadQR);
+
 </script>
 
 </body>
