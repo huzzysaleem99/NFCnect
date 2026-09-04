@@ -68,22 +68,35 @@ h1 {
 .button {
     display: block;
     text-decoration: none;
-    color: #050505;
-    background: #c9a227;
-    padding: 14px;
-    border-radius: 10px;
+    color: #f5f5f5;
+    background: #141414;
+    padding: 16px 18px;
+    border: 1px solid rgba(201, 162, 39, 0.45);
+    border-radius: 12px;
     margin: 12px 0;
     font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
+    font-weight: 500;
+    font-size: 15px;
+    letter-spacing: 0.3px;
+    transition: all 0.2s ease;
 }
 
 .button:hover {
-    opacity: 0.85;
+    background: #1a1a1a;
+    border-color: #c9a227;
+    transform: translateY(-1px);
 }
 
-/* Keeps Save Contact separate from other buttons */
 .save-contact {
     margin-top: 35px;
+    background: #c9a227;
+    color: #050505;
+    border: 1px solid #c9a227;
+    font-weight: 600;
+}
+
+.save-contact:hover {
+    background: #d6b43a;
 }
 
 .footer {
