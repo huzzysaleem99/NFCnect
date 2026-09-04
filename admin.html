@@ -9,7 +9,7 @@
 
 <title>VEUQO Production</title>
 
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <style>
 
@@ -22,139 +22,107 @@
 body {
     margin: 0;
     min-height: 100vh;
-
     font-family: 'Montserrat', sans-serif;
-
     background: #050505;
     color: #ffffff;
-
     display: flex;
     justify-content: center;
     align-items: center;
-
     padding: 25px;
 }
 
 .panel {
     width: 100%;
     max-width: 460px;
-
     background: #0d0d0d;
-
     border: 1px solid rgba(201,162,39,0.55);
     border-radius: 24px;
-
     padding: 38px 28px;
-
     text-align: center;
 }
 
 .logo {
     color: #c9a227;
-
     font-size: 28px;
     font-weight: 700;
-
     letter-spacing: 7px;
-
     margin-bottom: 8px;
 }
 
 .subtitle {
     color: #777777;
-
     font-size: 11px;
-
     letter-spacing: 2px;
-
     margin-bottom: 34px;
 }
 
 label {
     display: block;
-
     text-align: left;
-
     margin-bottom: 8px;
-
     color: #c9a227;
-
     font-size: 11px;
     font-weight: 600;
-
     letter-spacing: 1px;
 }
 
 input {
     width: 100%;
-
     padding: 16px;
-
     background: #111111;
     color: #ffffff;
-
     border: 1px solid rgba(201,162,39,0.45);
     border-radius: 12px;
-
     font-family: 'Montserrat', sans-serif;
-
     font-size: 15px;
-
     outline: none;
 }
 
 button {
     width: 100%;
-
     margin-top: 16px;
-
     padding: 16px;
-
     border: none;
     border-radius: 999px;
-
     background: #f4f4f4;
     color: #080808;
-
     font-family: 'Montserrat', sans-serif;
-
     font-weight: 700;
-
     letter-spacing: 1.5px;
-
     cursor: pointer;
 }
 
 .result {
     display: none;
-
     margin-top: 30px;
-
     padding-top: 28px;
-
     border-top: 1px solid rgba(201,162,39,0.18);
 }
 
 #qrcode {
     display: inline-block;
-
-    padding: 10px;
-
-    background: white;
-
+    padding: 12px;
+    background: #ffffff;
     border-radius: 14px;
-
     margin: 18px 0;
+}
+
+#qrcode img,
+#qrcode canvas {
+    display: block;
 }
 
 .profile-url {
     margin-top: 10px;
-
     font-size: 12px;
-
     color: #aaaaaa;
-
     word-break: break-all;
+}
+
+.status {
+    margin-top: 14px;
+    font-size: 12px;
+    color: #c9a227;
 }
 
 </style>
@@ -185,11 +153,16 @@ button {
         GENERATE QR
     </button>
 
+    <div class="status" id="status"></div>
+
     <div class="result" id="result">
 
         <div id="qrcode"></div>
 
-        <div class="profile-url" id="profileUrl"></div>
+        <div
+            class="profile-url"
+            id="profileUrl">
+        </div>
 
     </div>
 
@@ -200,14 +173,24 @@ button {
 
 function generateQR() {
 
-    const input =
-        document.getElementById("cardId");
+    const status =
+        document.getElementById("status");
 
     const cardId =
-        input.value.trim().toUpperCase();
+        document
+            .getElementById("cardId")
+            .value
+            .trim()
+            .toUpperCase();
 
     if (!cardId) {
-        alert("Enter a Card ID.");
+        status.innerText = "Enter a Card ID.";
+        return;
+    }
+
+    if (typeof QRCode === "undefined") {
+        status.innerText =
+            "QR library failed to load.";
         return;
     }
 
@@ -219,29 +202,27 @@ function generateQR() {
 
     qrContainer.innerHTML = "";
 
-    const qrImage =
-        document.createElement("img");
-
-    qrImage.src =
-        `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(profileUrl)}`;
-
-    qrImage.alt =
-        `QR code for ${cardId}`;
-
-    qrImage.width = 200;
-    qrImage.height = 200;
-
-    qrContainer.appendChild(qrImage);
+    new QRCode(qrContainer, {
+        text: profileUrl,
+        width: 220,
+        height: 220,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+    });
 
     document.getElementById("profileUrl").innerText =
         profileUrl;
 
     document.getElementById("result").style.display =
         "block";
+
+    status.innerText = "QR generated successfully.";
 }
 
 
-document.getElementById("generateButton")
+document
+    .getElementById("generateButton")
     .addEventListener("click", generateQR);
 
 </script>
