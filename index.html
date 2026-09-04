@@ -98,7 +98,10 @@
         <div class="job" id="job_title"></div>
 
         <div class="company" id="company"></div>
-
+        
+<a class="button" id="saveContact" href="#">
+    👤 Save Contact
+</a>
         <a class="button" id="phone">
             📞 Call
         </a>
@@ -136,6 +139,7 @@ const SUPABASE_KEY =
 const pathParts = window.location.pathname.split("/").filter(Boolean);
 
 let CARD_ID = null;
+let currentPerson = null;
 
 if (pathParts[0] === "c" && pathParts[1]) {
     CARD_ID = pathParts[1];
@@ -146,7 +150,7 @@ async function loadProfile() {
     if (!CARD_ID) {
         document.getElementById("loading").style.display = "none";
         document.getElementById("error").innerText =
-            "No NFCnect card selected.";
+            "No VEUQO card selected.";
         return;
     }
 
@@ -176,6 +180,7 @@ async function loadProfile() {
         }
 
         const person = profiles[0];
+        currentPerson = person;
 
         document.getElementById("full_name").innerText =
             person.full_name || "";
@@ -187,16 +192,16 @@ async function loadProfile() {
             person.company || "";
 
         document.getElementById("phone").href =
-            `tel:${person.phone}`;
+            `tel:${person.phone || ""}`;
 
         document.getElementById("email").href =
-            `mailto:${person.email}`;
+            `mailto:${person.email || ""}`;
 
         document.getElementById("website").href =
-            person.website;
+            person.website || "#";
 
         document.getElementById("linkedin").href =
-            person.linkedin;
+            person.linkedin || "#";
 
         document.getElementById("profile").style.display =
             "block";
@@ -211,6 +216,66 @@ async function loadProfile() {
         console.error(error);
     }
 }
+
+
+/* SAVE CONTACT */
+
+function escapeVCard(value) {
+    return String(value || "")
+        .replace(/\\/g, "\\\\")
+        .replace(/\n/g, "\\n")
+        .replace(/;/g, "\\;")
+        .replace(/,/g, "\\,");
+}
+
+function saveContact(event) {
+
+    event.preventDefault();
+
+    if (!currentPerson) {
+        return;
+    }
+
+    const person = currentPerson;
+
+    const vCard = [
+        "BEGIN:VCARD",
+        "VERSION:3.0",
+        `FN:${escapeVCard(person.full_name)}`,
+        `ORG:${escapeVCard(person.company)}`,
+        `TITLE:${escapeVCard(person.job_title)}`,
+        `TEL;TYPE=CELL:${escapeVCard(person.phone)}`,
+        `EMAIL;TYPE=INTERNET:${escapeVCard(person.email)}`,
+        `URL:${escapeVCard(person.website)}`,
+        `NOTE:${escapeVCard(person.linkedin)}`,
+        "END:VCARD"
+    ].join("\r\n");
+
+    const blob = new Blob(
+        [vCard],
+        { type: "text/vcard;charset=utf-8" }
+    );
+
+    const url = URL.createObjectURL(blob);
+
+    const downloadLink = document.createElement("a");
+
+    downloadLink.href = url;
+    downloadLink.download =
+        `${person.full_name || "contact"}.vcf`;
+
+    document.body.appendChild(downloadLink);
+
+    downloadLink.click();
+
+    document.body.removeChild(downloadLink);
+
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+
+document.getElementById("saveContact")
+    .addEventListener("click", saveContact);
 
 loadProfile();
 
