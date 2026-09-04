@@ -204,6 +204,38 @@ h1 {
     font-size: 12px;
 }
 
+     .social-icon {
+    width: 22px;
+    height: 22px;
+    margin-right: 16px;
+    flex-shrink: 0;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: 700;
+}
+
+/* Instagram */
+.instagram-icon {
+    color: #E4405F;
+    font-size: 23px;
+}
+
+/* Facebook */
+.facebook-icon {
+    background: #1877F2;
+    color: white;
+    border-radius: 50%;
+    font-size: 18px;
+}
+
+/* LinkedIn */
+.linkedin-icon {
+    fill: #0A66C2;
+}
+
 #error {
     color: #c9a227;
 }
@@ -252,6 +284,15 @@ h1 {
 
     <span>LinkedIn</span>
 
+</a>
+        <a class="button" id="instagram" target="_blank" style="display:none;">
+    <span class="social-icon instagram-icon">◎</span>
+    <span>Instagram</span>
+</a>
+
+<a class="button" id="facebook" target="_blank" style="display:none;">
+    <span class="social-icon facebook-icon">f</span>
+    <span>Facebook</span>
 </a>
         
         <a class="button save-contact" id="saveContact" href="#">
@@ -343,6 +384,23 @@ async function loadProfile() {
 
         document.getElementById("linkedin").href =
             person.linkedin || "#";
+
+        const instagramButton =
+    document.getElementById("instagram");
+
+if (person.instagram) {
+    instagramButton.href = person.instagram;
+    instagramButton.style.display = "flex";
+}
+
+
+const facebookButton =
+    document.getElementById("facebook");
+
+if (person.facebook) {
+    facebookButton.href = person.facebook;
+    facebookButton.style.display = "flex";
+}
 
         document.getElementById("profile").style.display =
             "block";
