@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/c/:cardId",
+      "destination": "/index.html"
+    }
+  ]
+}
