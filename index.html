@@ -152,7 +152,7 @@ async function loadProfile() {
     try {
 
         const response = await fetch(
-            `${SUPABASE_URL}/Profiles?card_id=eq.${encodeURIComponent(CARD_ID)}&status=eq.active&select=*`
+            `${SUPABASE_URL}/Profiles?card_id=eq.${encodeURIComponent(CARD_ID)}&status=eq.active&select=*`,
             {
                 headers: {
                     "apikey": SUPABASE_KEY
