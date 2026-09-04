@@ -248,9 +248,10 @@ async function loginAdmin() {
         });
 
     if (error) {
-        loginStatus.innerText = "Incorrect email or password.";
-        return;
-    }
+    loginStatus.innerText = error.message;
+    console.error(error);
+    return;
+}
 
     loginStatus.innerText = "";
 
