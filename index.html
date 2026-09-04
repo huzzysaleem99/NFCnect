@@ -142,6 +142,12 @@ if (pathParts[0] === "c" && pathParts[1]) {
 }
 
 async function loadProfile() {
+    if (!CARD_ID) {
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("error").innerText =
+        "No NFCnect card selected.";
+    return;
+}
 
     try {
 
