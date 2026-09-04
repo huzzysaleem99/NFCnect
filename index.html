@@ -6,7 +6,7 @@
 
     <title>VEUQO Digital Card</title>
 
- <style>
+<style>
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
 
@@ -18,13 +18,19 @@ body {
     margin: 0;
     min-height: 100vh;
     font-family: 'Montserrat', sans-serif;
+
     background: #050505;
     color: #ffffff;
+
     display: flex;
     justify-content: center;
     align-items: center;
+
     padding: 25px;
 }
+
+
+/* MAIN CARD */
 
 .card {
     width: 100%;
@@ -49,33 +55,47 @@ body {
         0 25px 60px rgba(0,0,0,0.45),
         0 0 30px rgba(201,162,39,0.06);
 }
-}
+
+
+/* LOGO */
 
 .logo {
     color: #c9a227;
+
     font-size: 30px;
     font-weight: 700;
+
     letter-spacing: 8px;
+
     margin-bottom: 45px;
 }
 
+
+/* PROFILE */
+
 h1 {
     margin: 0;
+
     font-size: 28px;
     font-weight: 600;
+
     letter-spacing: 0.2px;
 }
 
 .job {
     color: #c9a227;
+
     font-size: 16px;
     font-weight: 500;
+
     margin-top: 10px;
 }
 
 .company {
     color: #b5b5b5;
+
     font-size: 14px;
+
     margin-top: 6px;
     margin-bottom: 34px;
 }
@@ -85,23 +105,28 @@ h1 {
 
 .button {
     position: relative;
+
     display: flex;
     align-items: center;
 
     width: 100%;
-    min-height: 64px;
+    min-height: 60px;
 
-    margin: 12px 0;
+    margin: 11px 0;
+
     padding: 0 48px 0 20px;
 
     background: #111111;
-    border: 1px solid rgba(201, 162, 39, 0.55);
-    border-radius: 14px;
+
+    border: 1px solid rgba(201,162,39,0.55);
+    border-radius: 15px;
 
     color: #ffffff;
+
     text-decoration: none;
 
     font-family: 'Montserrat', sans-serif;
+
     font-size: 15px;
     font-weight: 500;
 
@@ -109,16 +134,16 @@ h1 {
 }
 
 .button:hover {
-    min-height: 60px;
-    margin: 11px 0;
-    border-radius: 15px;
-  
+    background: #171717;
+    border-color: #c9a227;
 }
 
-/* GOLD ICON */
+
+/* STANDARD ICON */
 
 .icon {
     width: 30px;
+
     margin-right: 16px;
 
     color: #c9a227;
@@ -131,21 +156,33 @@ h1 {
     align-items: center;
 }
 
-     .linkedin-icon {
+
+/* LINKEDIN */
+
+.linkedin-icon {
     width: 22px;
     height: 22px;
+
     margin-right: 16px;
+
     flex-shrink: 0;
 
     fill: #0A66C2;
 }
 
-     .social-svg {
+
+/* SOCIAL ICONS */
+
+.social-svg {
     display: block;
+
     width: 23px;
     height: 23px;
+
     min-width: 23px;
+
     margin-right: 16px;
+
     flex-shrink: 0;
 }
 
@@ -157,15 +194,18 @@ h1 {
     fill: #1877F2;
 }
 
-/* ARROW */
+
+/* GOLD ARROWS */
 
 .button:not(.save-contact)::after {
     content: "›";
 
     position: absolute;
+
     right: 20px;
 
     color: #c9a227;
+
     font-size: 30px;
     font-weight: 300;
 
@@ -184,46 +224,59 @@ h1 {
     min-height: 60px;
 
     margin-top: 32px;
+
     padding: 0 28px;
 
     background: #f4f4f4;
+
     color: #090909;
 
     border: none;
     border-radius: 999px;
 
     font-family: 'Montserrat', sans-serif;
+
     font-size: 14px;
     font-weight: 700;
+
     letter-spacing: 2.4px;
+
     text-transform: uppercase;
 
-    box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+    box-shadow:
+        0 8px 20px rgba(0,0,0,0.18);
+
+    transition: 0.2s ease;
 }
 
 .button.save-contact:hover {
     background: #ffffff;
     border: none;
+
+    transform: translateY(-1px);
 }
 
 .save-icon {
     font-size: 22px;
+
     margin-right: 12px;
+
     line-height: 1;
+
     letter-spacing: 0;
 }
 
-/* FOOTER */
 
-.footer {
-    margin-top: 38px;
-    color: #777777;
-    font-size: 12px;
+/* PREMIUM QR SECTION */
 
-  .qr-section {
+.qr-section {
+    width: 100%;
+
     margin-top: 32px;
-    padding-top: 26px;
-    border-top: 1px solid rgba(201, 162, 39, 0.18);
+    padding-top: 28px;
+
+    border-top:
+        1px solid rgba(201,162,39,0.18);
 
     display: flex;
     flex-direction: column;
@@ -232,21 +285,24 @@ h1 {
 
 #qrcode {
     padding: 12px;
+
     background: #ffffff;
+
+    border:
+        1px solid rgba(201,162,39,0.55);
 
     border-radius: 18px;
 
     box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.35),
-        0 0 18px rgba(201, 162, 39, 0.10);
-
-    border: 1px solid rgba(201, 162, 39, 0.45);
+        0 12px 32px rgba(0,0,0,0.40),
+        0 0 22px rgba(201,162,39,0.10);
 }
 
 #qrcode img,
 #qrcode canvas {
     display: block;
-    border-radius: 7px;
+
+    border-radius: 6px;
 }
 
 .qr-label {
@@ -258,9 +314,24 @@ h1 {
     font-weight: 600;
 
     letter-spacing: 2px;
+
     text-transform: uppercase;
 }
-    
+
+
+/* FOOTER */
+
+.footer {
+    margin-top: 38px;
+
+    color: #777777;
+
+    font-size: 12px;
+}
+
+
+/* ERROR */
+
 #error {
     color: #c9a227;
 }
