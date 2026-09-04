@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>George H | NFCnect</title>
+    <title>NFCnect Digital Card</title>
 
     <style>
         * {
@@ -15,8 +15,8 @@
             margin: 0;
             min-height: 100vh;
             font-family: Arial, sans-serif;
-            background: #000000;
-            color: #cfb53b;
+            background: #050505;
+            color: #ffffff;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -31,7 +31,7 @@
             border-radius: 24px;
             padding: 40px 25px;
             text-align: center;
-            box-shadow: 0 0 30px rgba(201, 162, 39, 0.15);
+            box-shadow: 0 0 30px rgba(201,162,39,0.15);
         }
 
         .logo {
@@ -69,55 +69,140 @@
             font-weight: bold;
         }
 
-        .button:hover {
-            opacity: 0.85;
-        }
-
         .footer {
             margin-top: 30px;
             color: #777777;
             font-size: 12px;
+        }
+
+        #error {
+            color: #c9a227;
         }
     </style>
 </head>
 
 <body>
 
-    <div class="card">
+<div class="card">
 
-        <div class="logo">NFCnect</div>
+    <div class="logo">NFCnect</div>
 
-        <h1>TEST</h1>
+    <div id="loading">
+        Loading profile...
+    </div>
 
-        <div class="job">
-            Technical Sales Manager
-        </div>
+    <div id="profile" style="display:none;">
 
-        <div class="company">
-            TEST LTD
-        </div>
+        <h1 id="full_name"></h1>
 
-        <a class="button" href="tel:07562628562">
+        <div class="job" id="job_title"></div>
+
+        <div class="company" id="company"></div>
+
+        <a class="button" id="phone">
             📞 Call
         </a>
 
-        <a class="button" href="mailto:hkah@test.co.uk">
+        <a class="button" id="email">
             ✉️ Email
         </a>
 
-        <a class="button" href="https://www.google.co.uk" target="_blank">
+        <a class="button" id="website" target="_blank">
             🌐 Website
         </a>
 
-        <a class="button" href="https://www.linkedin.com/in/huzaifah-saleem-465555/" target="_blank">
-               LinkedIn
+        <a class="button" id="linkedin" target="_blank">
+            LinkedIn
         </a>
 
-        <div class="footer">
-            Powered by NFCnect.
-        </div>
-
     </div>
+
+    <div id="error"></div>
+
+    <div class="footer">
+        Powered by NFCnect
+    </div>
+
+</div>
+
+<script>
+
+const SUPABASE_URL =
+"https://qldzzuqdzoarboonnizn.supabase.co/rest/v1";
+
+const SUPABASE_KEY =
+"sb_publishable_MOUxn_K0T9DpYe0ZZyk-TA_cMjATkVd";
+
+const CARD_ID = "NFC-7H42K9";
+
+async function loadProfile() {
+
+    try {
+
+        const response = await fetch(
+            `${SUPABASE_URL}/Profiles?card_id=eq.${CARD_ID}&status=eq.active&select=*`,
+            {
+                headers: {
+                    "apikey": SUPABASE_KEY
+                }
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("Database request failed");
+        }
+
+        const profiles = await response.json();
+
+        document.getElementById("loading").style.display = "none";
+
+        if (profiles.length === 0) {
+            document.getElementById("error").innerText =
+                "Profile not found.";
+            return;
+        }
+
+        const person = profiles[0];
+
+        document.getElementById("full_name").innerText =
+            person.full_name || "";
+
+        document.getElementById("job_title").innerText =
+            person.job_title || "";
+
+        document.getElementById("company").innerText =
+            person.company || "";
+
+        document.getElementById("phone").href =
+            `tel:${person.phone}`;
+
+        document.getElementById("email").href =
+            `mailto:${person.email}`;
+
+        document.getElementById("website").href =
+            person.website;
+
+        document.getElementById("linkedin").href =
+            person.linkedin;
+
+        document.getElementById("profile").style.display =
+            "block";
+
+    } catch (error) {
+
+        document.getElementById("loading").style.display =
+            "none";
+
+        document.getElementById("error").innerText =
+            "Unable to load profile.";
+
+        console.error(error);
+    }
+}
+
+loadProfile();
+
+</script>
 
 </body>
 </html>
