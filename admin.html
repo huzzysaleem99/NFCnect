@@ -9,7 +9,7 @@
 
 <title>VEUQO Production</title>
 
-<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
 
 <style>
 
@@ -214,17 +214,24 @@ function generateQR() {
     const profileUrl =
         `https://veuqo.co.uk/c/${encodeURIComponent(cardId)}`;
 
-    document.getElementById("qrcode").innerHTML = "";
+    const qrContainer =
+        document.getElementById("qrcode");
 
-    new QRCode(
-        document.getElementById("qrcode"),
-        {
-            text: profileUrl,
-            width: 200,
-            height: 200,
-            correctLevel: QRCode.CorrectLevel.H
-        }
-    );
+    qrContainer.innerHTML = "";
+
+    const qrImage =
+        document.createElement("img");
+
+    qrImage.src =
+        `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(profileUrl)}`;
+
+    qrImage.alt =
+        `QR code for ${cardId}`;
+
+    qrImage.width = 200;
+    qrImage.height = 200;
+
+    qrContainer.appendChild(qrImage);
 
     document.getElementById("profileUrl").innerText =
         profileUrl;
