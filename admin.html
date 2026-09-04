@@ -241,18 +241,42 @@ async function loginAdmin() {
 
     loginStatus.innerText = "Logging in...";
 
+    // Sign in with Supabase
     const { data, error } =
         await supabaseClient.auth.signInWithPassword({
             email: email,
             password: password
         });
 
+    // Login failed
     if (error) {
-    loginStatus.innerText = error.message;
-    console.error(error);
-    return;
-}
+        loginStatus.innerText = error.message;
+        console.error(error);
+        return;
+    }
 
+    // Check whether this user is a VEUQO admin
+    const userId = data.user.id;
+
+    const { data: adminRecord, error: adminError } =
+        await supabaseClient
+            .from("admin_users")
+            .select("user_id")
+            .eq("user_id", userId)
+            .single();
+
+    // Logged in, but not an authorised admin
+    if (adminError || !adminRecord) {
+
+        await supabaseClient.auth.signOut();
+
+        loginStatus.innerText =
+            "This account is not authorised as an admin.";
+
+        return;
+    }
+
+    // Authorised admin
     loginStatus.innerText = "";
 
     document.getElementById("loginSection").style.display =
@@ -281,31 +305,48 @@ document
     }
 }
 
-checkAdminSession();
+async function checkAdminSession() {
 
-    const SUPABASE_URL =
-"https://qldzzuqdzoarboonnizn.supabase.co/rest/v1";
+    const { data } =
+        await supabaseClient.auth.getSession();
 
-const SUPABASE_KEY =
-"sb_publishable_MOUxn_K0T9DpYe0ZZyk-TA_cMjATkVd";
+    const session = data.session;
 
-   async function createCardId() {
+    if (!session) {
+        return;
+    }
 
-    const characters =
-        "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    const userId = session.user.id;
 
-    let unique = false;
-    let cardId = "";
+    const { data: adminRecord, error } =
+        await supabaseClient
+            .from("admin_users")
+            .select("user_id")
+            .eq("user_id", userId)
+            .single();
 
-    while (!unique) {
+    if (error || !adminRecord) {
 
-        let randomPart = "";
+        await supabaseClient.auth.signOut();
 
-        for (let i = 0; i < 6; i++) {
-            randomPart += characters.charAt(
-                Math.floor(Math.random() * characters.length)
-            );
-        }
+        document.getElementById("loginStatus").innerText =
+            "This account is not authorised as an admin.";
+
+        document.getElementById("loginSection").style.display =
+            "block";
+
+        document.getElementById("adminSection").style.display =
+            "none";
+
+        return;
+    }
+
+    document.getElementById("loginSection").style.display =
+        "none";
+
+    document.getElementById("adminSection").style.display =
+        "block";
+}
 
         cardId = `VQ-${randomPart}`;
 
