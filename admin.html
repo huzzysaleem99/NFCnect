@@ -223,6 +223,65 @@ button {
 
 <script>
 
+    const supabaseClient = supabase.createClient(
+    "https://qldzzuqdzoarboonnizn.supabase.co",
+    "sb_publishable_MOUxn_K0T9DpYe0ZZyk-TA_cMjATkVd"
+);
+
+async function loginAdmin() {
+
+    const email =
+        document.getElementById("adminEmail").value.trim();
+
+    const password =
+        document.getElementById("adminPassword").value;
+
+    const loginStatus =
+        document.getElementById("loginStatus");
+
+    loginStatus.innerText = "Logging in...";
+
+    const { data, error } =
+        await supabaseClient.auth.signInWithPassword({
+            email: email,
+            password: password
+        });
+
+    if (error) {
+        loginStatus.innerText = "Incorrect email or password.";
+        return;
+    }
+
+    loginStatus.innerText = "";
+
+    document.getElementById("loginSection").style.display =
+        "none";
+
+    document.getElementById("adminSection").style.display =
+        "block";
+}
+
+document
+    .getElementById("loginButton")
+    .addEventListener("click", loginAdmin);
+
+    async function checkAdminSession() {
+
+    const { data } =
+        await supabaseClient.auth.getSession();
+
+    if (data.session) {
+
+        document.getElementById("loginSection").style.display =
+            "none";
+
+        document.getElementById("adminSection").style.display =
+            "block";
+    }
+}
+
+checkAdminSession();
+
     const SUPABASE_URL =
 "https://qldzzuqdzoarboonnizn.supabase.co/rest/v1";
 
