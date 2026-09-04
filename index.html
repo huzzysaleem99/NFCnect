@@ -315,6 +315,28 @@ if (pathParts[0] === "c" && pathParts[1]) {
     CARD_ID = pathParts[1];
 }
 
+
+/* SHOW OR HIDE A BUTTON */
+
+function setButton(id, value, href) {
+
+    const button = document.getElementById(id);
+
+    if (!button) {
+        return;
+    }
+
+    if (value && String(value).trim() !== "") {
+        button.href = href;
+        button.style.display = "flex";
+    } else {
+        button.style.display = "none";
+    }
+}
+
+
+/* LOAD PROFILE */
+
 async function loadProfile() {
 
     if (!CARD_ID) {
@@ -352,6 +374,9 @@ async function loadProfile() {
         const person = profiles[0];
         currentPerson = person;
 
+
+        /* PROFILE DETAILS */
+
         document.getElementById("full_name").innerText =
             person.full_name || "";
 
@@ -361,34 +386,45 @@ async function loadProfile() {
         document.getElementById("company").innerText =
             person.company || "";
 
-        document.getElementById("phone").href =
-            `tel:${person.phone || ""}`;
 
-        document.getElementById("email").href =
-            `mailto:${person.email || ""}`;
+        /* CONTACT BUTTONS */
 
-        document.getElementById("website").href =
-            person.website || "#";
+        setButton(
+            "phone",
+            person.phone,
+            `tel:${person.phone || ""}`
+        );
 
-        document.getElementById("linkedin").href =
-            person.linkedin || "#";
+        setButton(
+            "email",
+            person.email,
+            `mailto:${person.email || ""}`
+        );
 
-        const instagramButton =
-    document.getElementById("instagram");
+        setButton(
+            "website",
+            person.website,
+            person.website || "#"
+        );
 
-if (person.instagram) {
-    instagramButton.href = person.instagram;
-    instagramButton.style.display = "flex";
-}
+        setButton(
+            "linkedin",
+            person.linkedin,
+            person.linkedin || "#"
+        );
 
+        setButton(
+            "instagram",
+            person.instagram,
+            person.instagram || "#"
+        );
 
-const facebookButton =
-    document.getElementById("facebook");
+        setButton(
+            "facebook",
+            person.facebook,
+            person.facebook || "#"
+        );
 
-if (person.facebook) {
-    facebookButton.href = person.facebook;
-    facebookButton.style.display = "flex";
-}
 
         document.getElementById("profile").style.display =
             "block";
@@ -408,12 +444,14 @@ if (person.facebook) {
 /* SAVE CONTACT */
 
 function escapeVCard(value) {
+
     return String(value || "")
         .replace(/\\/g, "\\\\")
         .replace(/\n/g, "\\n")
         .replace(/;/g, "\\;")
         .replace(/,/g, "\\,");
 }
+
 
 function saveContact(event) {
 
@@ -425,18 +463,58 @@ function saveContact(event) {
 
     const person = currentPerson;
 
-    const vCard = [
+    const vCardLines = [
         "BEGIN:VCARD",
         "VERSION:3.0",
         `FN:${escapeVCard(person.full_name)}`,
         `ORG:${escapeVCard(person.company)}`,
-        `TITLE:${escapeVCard(person.job_title)}`,
-        `TEL;TYPE=CELL:${escapeVCard(person.phone)}`,
-        `EMAIL;TYPE=INTERNET:${escapeVCard(person.email)}`,
-        `URL:${escapeVCard(person.website)}`,
-        `NOTE:${escapeVCard(person.linkedin)}`,
-        "END:VCARD"
-    ].join("\r\n");
+        `TITLE:${escapeVCard(person.job_title)}`
+    ];
+
+
+    if (person.phone) {
+        vCardLines.push(
+            `TEL;TYPE=CELL:${escapeVCard(person.phone)}`
+        );
+    }
+
+    if (person.email) {
+        vCardLines.push(
+            `EMAIL;TYPE=INTERNET:${escapeVCard(person.email)}`
+        );
+    }
+
+    if (person.website) {
+        vCardLines.push(
+            `URL:${escapeVCard(person.website)}`
+        );
+    }
+
+
+    const socialLinks = [];
+
+    if (person.linkedin) {
+        socialLinks.push(`LinkedIn: ${person.linkedin}`);
+    }
+
+    if (person.instagram) {
+        socialLinks.push(`Instagram: ${person.instagram}`);
+    }
+
+    if (person.facebook) {
+        socialLinks.push(`Facebook: ${person.facebook}`);
+    }
+
+    if (socialLinks.length > 0) {
+        vCardLines.push(
+            `NOTE:${escapeVCard(socialLinks.join("\n"))}`
+        );
+    }
+
+
+    vCardLines.push("END:VCARD");
+
+    const vCard = vCardLines.join("\r\n");
 
     const blob = new Blob(
         [vCard],
@@ -448,6 +526,7 @@ function saveContact(event) {
     const downloadLink = document.createElement("a");
 
     downloadLink.href = url;
+
     downloadLink.download =
         `${person.full_name || "contact"}.vcf`;
 
@@ -457,12 +536,19 @@ function saveContact(event) {
 
     document.body.removeChild(downloadLink);
 
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    setTimeout(() => {
+        URL.revokeObjectURL(url);
+    }, 1000);
 }
 
 
+/* SAVE CONTACT BUTTON */
+
 document.getElementById("saveContact")
     .addEventListener("click", saveContact);
+
+
+/* START */
 
 loadProfile();
 
