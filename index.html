@@ -7,14 +7,21 @@
     <title>VEUQO Digital Card</title>
 
     <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+        
         * {
             box-sizing: border-box;
         }
-
+        
+.save-contact {
+    margin-top: 35px;
+}
+        
         body {
             margin: 0;
             min-height: 100vh;
-            font-family: Arial, sans-serif;
+            font-family: 'Montserrat', sans-serif;
             background: #050505;
             color: #ffffff;
             display: flex;
@@ -35,18 +42,16 @@
         }
 
         .logo {
-            color: #c9a227;
-            font-size: 28px;
-            font-weight: bold;
-            letter-spacing: 2px;
-            margin-bottom: 30px;
-        }
-
-        h1 {
-            margin: 0;
-            font-size: 30px;
-        }
-
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    letter-spacing: 6px;
+}
+        
+     h1 {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+        
         .job {
             color: #c9a227;
             font-size: 17px;
@@ -59,15 +64,10 @@
         }
 
         .button {
-            display: block;
-            text-decoration: none;
-            color: #050505;
-            background: #c9a227;
-            padding: 14px;
-            border-radius: 10px;
-            margin: 12px 0;
-            font-weight: bold;
-        }
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+}
+        
 
         .footer {
             margin-top: 30px;
@@ -99,9 +99,7 @@
 
         <div class="company" id="company"></div>
         
-<a class="button" id="saveContact" href="#">
-    👤 Save Contact
-</a>
+
         <a class="button" id="phone">
             📞 Call
         </a>
@@ -117,6 +115,10 @@
         <a class="button" id="linkedin" target="_blank">
             LinkedIn
         </a>
+        
+        <a class="button" id="saveContact" href="#">
+    👤 Save Contact
+</a>
 
     </div>
 
