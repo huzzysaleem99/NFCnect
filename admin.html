@@ -656,6 +656,81 @@ document
     .getElementById("downloadQrButton")
     .addEventListener("click", downloadQR);
 
+    async function loadCustomer() {
+
+    const manageStatus =
+        document.getElementById("manageStatus");
+
+    const cardId =
+        document
+            .getElementById("searchCardId")
+            .value
+            .trim();
+
+    if (!cardId) {
+        manageStatus.innerText =
+            "Enter a Card ID.";
+        return;
+    }
+
+    manageStatus.innerText =
+        "Loading customer...";
+
+    const { data, error } =
+        await supabaseClient
+            .from("Profiles")
+            .select("*")
+            .eq("card_id", cardId)
+            .single();
+
+    if (error || !data) {
+        console.error(error);
+
+        manageStatus.innerText =
+            "Customer not found.";
+
+        return;
+    }
+
+    document.getElementById("fullName").value =
+        data.full_name || "";
+
+    document.getElementById("jobTitle").value =
+        data.job_title || "";
+
+    document.getElementById("company").value =
+        data.company || "";
+
+    document.getElementById("phone").value =
+        data.phone || "";
+
+    document.getElementById("email").value =
+        data.email || "";
+
+    document.getElementById("website").value =
+        data.website || "";
+
+    document.getElementById("linkedin").value =
+        data.linkedin || "";
+
+    document.getElementById("instagram").value =
+        data.instagram || "";
+
+    document.getElementById("facebook").value =
+        data.facebook || "";
+
+    document.getElementById("cardId").value =
+        data.card_id;
+
+    manageStatus.innerText =
+        "Customer loaded successfully.";
+}
+
+
+document
+    .getElementById("loadCustomerButton")
+    .addEventListener("click", loadCustomer);
+
     async function createCustomer() {
 
     const status =
