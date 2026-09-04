@@ -332,6 +332,10 @@ button {
         CREATE CUSTOMER
     </button>
 
+     <button id="saveChangesButton" class="secondary-button">
+    SAVE CHANGES
+</button>
+
     <button id="generateButton">
         GENERATE QR
     </button>
@@ -817,6 +821,75 @@ document
 document
     .getElementById("createCustomerButton")
     .addEventListener("click", createCustomer);
+
+    async function saveCustomerChanges() {
+
+    const status =
+        document.getElementById("status");
+
+    const cardId =
+        document.getElementById("cardId").value.trim();
+
+    if (!cardId) {
+        status.innerText =
+            "Load a customer first.";
+        return;
+    }
+
+    status.innerText =
+        "Saving changes...";
+
+    const updates = {
+        full_name:
+            document.getElementById("fullName").value.trim(),
+
+        job_title:
+            document.getElementById("jobTitle").value.trim() || null,
+
+        company:
+            document.getElementById("company").value.trim() || null,
+
+        phone:
+            document.getElementById("phone").value.trim() || null,
+
+        email:
+            document.getElementById("email").value.trim() || null,
+
+        website:
+            document.getElementById("website").value.trim() || null,
+
+        linkedin:
+            document.getElementById("linkedin").value.trim() || null,
+
+        instagram:
+            document.getElementById("instagram").value.trim() || null,
+
+        facebook:
+            document.getElementById("facebook").value.trim() || null
+    };
+
+    const { error } =
+        await supabaseClient
+            .from("Profiles")
+            .update(updates)
+            .eq("card_id", cardId);
+
+    if (error) {
+        console.error(error);
+
+        status.innerText =
+            "Unable to save changes: " + error.message;
+
+        return;
+    }
+
+    status.innerText =
+        "Changes saved successfully.";
+}
+
+document
+    .getElementById("saveChangesButton")
+    .addEventListener("click", saveCustomerChanges);
 
 async function logoutAdmin() {
 
