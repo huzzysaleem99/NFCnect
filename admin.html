@@ -223,10 +223,17 @@ button {
 
 <script>
 
-    const supabaseClient = supabase.createClient(
+const supabaseClient = supabase.createClient(
     "https://qldzzuqdzoarboonnizn.supabase.co",
     "sb_publishable_MOUxn_K0T9DpYe0ZZyk-TA_cMjATkVd"
 );
+
+const SUPABASE_URL =
+    "https://qldzzuqdzoarboonnizn.supabase.co/rest/v1";
+
+const SUPABASE_KEY =
+    "sb_publishable_MOUxn_K0T9DpYe0ZZyk-TA_cMjATkVd";
+
 
 async function loginAdmin() {
 
@@ -241,21 +248,18 @@ async function loginAdmin() {
 
     loginStatus.innerText = "Logging in...";
 
-    // Sign in with Supabase
     const { data, error } =
         await supabaseClient.auth.signInWithPassword({
             email: email,
             password: password
         });
 
-    // Login failed
     if (error) {
         loginStatus.innerText = error.message;
         console.error(error);
         return;
     }
 
-    // Check whether this user is a VEUQO admin
     const userId = data.user.id;
 
     const { data: adminRecord, error: adminError } =
@@ -265,7 +269,6 @@ async function loginAdmin() {
             .eq("user_id", userId)
             .single();
 
-    // Logged in, but not an authorised admin
     if (adminError || !adminRecord) {
 
         await supabaseClient.auth.signOut();
@@ -276,7 +279,6 @@ async function loginAdmin() {
         return;
     }
 
-    // Authorised admin
     loginStatus.innerText = "";
 
     document.getElementById("loginSection").style.display =
@@ -286,24 +288,11 @@ async function loginAdmin() {
         "block";
 }
 
+
 document
     .getElementById("loginButton")
     .addEventListener("click", loginAdmin);
 
-    async function checkAdminSession() {
-
-    const { data } =
-        await supabaseClient.auth.getSession();
-
-    if (data.session) {
-
-        document.getElementById("loginSection").style.display =
-            "none";
-
-        document.getElementById("adminSection").style.display =
-            "block";
-    }
-}
 
 async function checkAdminSession() {
 
@@ -348,6 +337,26 @@ async function checkAdminSession() {
         "block";
 }
 
+
+async function createCardId() {
+
+    const characters =
+        "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+    let unique = false;
+    let cardId = "";
+
+    while (!unique) {
+
+        let randomPart = "";
+
+        for (let i = 0; i < 6; i++) {
+
+            randomPart += characters.charAt(
+                Math.floor(Math.random() * characters.length)
+            );
+        }
+
         cardId = `VQ-${randomPart}`;
 
         const response = await fetch(
@@ -360,7 +369,10 @@ async function checkAdminSession() {
         );
 
         if (!response.ok) {
-            alert("Unable to check Card ID.");
+
+            document.getElementById("status").innerText =
+                "Unable to check Card ID.";
+
             return;
         }
 
@@ -371,7 +383,8 @@ async function checkAdminSession() {
         }
     }
 
-    document.getElementById("cardId").value = cardId;
+    document.getElementById("cardId").value =
+        cardId;
 
     document.getElementById("status").innerText =
         "Unique Card ID generated.";
@@ -381,6 +394,7 @@ async function checkAdminSession() {
 document
     .getElementById("generateIdButton")
     .addEventListener("click", createCardId);
+
 
 function generateQR() {
 
@@ -392,16 +406,20 @@ function generateQR() {
             .getElementById("cardId")
             .value
             .trim();
-            
 
     if (!cardId) {
-        status.innerText = "Enter a Card ID.";
+
+        status.innerText =
+            "Enter a Card ID.";
+
         return;
     }
 
     if (typeof QRCode === "undefined") {
+
         status.innerText =
             "QR library failed to load.";
+
         return;
     }
 
@@ -428,7 +446,8 @@ function generateQR() {
     document.getElementById("result").style.display =
         "block";
 
-    status.innerText = "QR generated successfully.";
+    status.innerText =
+        "QR generated successfully.";
 }
 
 
@@ -436,7 +455,8 @@ document
     .getElementById("generateButton")
     .addEventListener("click", generateQR);
 
-    function downloadQR() {
+
+function downloadQR() {
 
     const qrContainer =
         document.getElementById("qrcode");
@@ -450,10 +470,16 @@ document
     let dataUrl = "";
 
     if (canvas) {
-        dataUrl = canvas.toDataURL("image/png");
+
+        dataUrl =
+            canvas.toDataURL("image/png");
+
     } else if (image) {
+
         dataUrl = image.src;
+
     } else {
+
         alert("Generate a QR code first.");
         return;
     }
@@ -464,19 +490,28 @@ document
             .value
             .trim();
 
-    const link = document.createElement("a");
+    const link =
+        document.createElement("a");
 
     link.href = dataUrl;
-    link.download = `${cardId || "VEUQO"}-QR.png`;
+
+    link.download =
+        `${cardId || "VEUQO"}-QR.png`;
 
     document.body.appendChild(link);
+
     link.click();
+
     document.body.removeChild(link);
 }
+
 
 document
     .getElementById("downloadQrButton")
     .addEventListener("click", downloadQR);
+
+
+checkAdminSession();
 
 </script>
 
