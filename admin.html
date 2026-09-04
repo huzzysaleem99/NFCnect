@@ -198,6 +198,37 @@ button {
     <div id="adminSection" style="display:none;">
 
     <label for="cardId">
+
+        <div id="customerForm">
+
+    <label for="fullName">FULL NAME</label>
+    <input id="fullName" type="text" placeholder="Customer name">
+
+    <label for="jobTitle" style="margin-top:16px;">JOB TITLE</label>
+    <input id="jobTitle" type="text" placeholder="Job title">
+
+    <label for="company" style="margin-top:16px;">COMPANY</label>
+    <input id="company" type="text" placeholder="Company">
+
+    <label for="phone" style="margin-top:16px;">PHONE</label>
+    <input id="phone" type="text" placeholder="+44...">
+
+    <label for="email" style="margin-top:16px;">EMAIL</label>
+    <input id="email" type="email" placeholder="customer@example.com">
+
+    <label for="website" style="margin-top:16px;">WEBSITE</label>
+    <input id="website" type="text" placeholder="https://...">
+
+    <label for="linkedin" style="margin-top:16px;">LINKEDIN</label>
+    <input id="linkedin" type="text" placeholder="https://linkedin.com/...">
+
+    <label for="instagram" style="margin-top:16px;">INSTAGRAM</label>
+    <input id="instagram" type="text" placeholder="https://instagram.com/...">
+
+    <label for="facebook" style="margin-top:16px;">FACEBOOK</label>
+    <input id="facebook" type="text" placeholder="https://facebook.com/...">
+
+</div>
         CARD ID
     </label>
 
@@ -209,6 +240,10 @@ button {
 
     <button id="generateIdButton" class="secondary-button">
     GENERATE CARD ID
+</button>
+
+        <button id="createCustomerButton">
+    CREATE CUSTOMER
 </button>
     
 
@@ -523,6 +558,93 @@ function downloadQR() {
 document
     .getElementById("downloadQrButton")
     .addEventListener("click", downloadQR);
+
+    async function createCustomer() {
+
+    const status =
+        document.getElementById("status");
+
+    const cardId =
+        document.getElementById("cardId").value.trim();
+
+    const fullName =
+        document.getElementById("fullName").value.trim();
+
+    if (!cardId) {
+        status.innerText =
+            "Generate a Card ID first.";
+        return;
+    }
+
+    if (!fullName) {
+        status.innerText =
+            "Enter the customer's full name.";
+        return;
+    }
+
+    status.innerText =
+        "Creating customer...";
+
+    const customer = {
+        card_id: cardId,
+        full_name: fullName,
+        job_title:
+            document.getElementById("jobTitle").value.trim() || null,
+
+        company:
+            document.getElementById("company").value.trim() || null,
+
+        phone:
+            document.getElementById("phone").value.trim() || null,
+
+        email:
+            document.getElementById("email").value.trim() || null,
+
+        website:
+            document.getElementById("website").value.trim() || null,
+
+        linkedin:
+            document.getElementById("linkedin").value.trim() || null,
+
+        instagram:
+            document.getElementById("instagram").value.trim() || null,
+
+        facebook:
+            document.getElementById("facebook").value.trim() || null,
+
+        status: "active"
+    };
+
+    const { error } =
+        await supabaseClient
+            .from("Profiles")
+            .insert(customer);
+
+    if (error) {
+
+        console.error(error);
+
+        if (error.code === "23505") {
+            status.innerText =
+                "That Card ID already exists. Generate another.";
+        } else {
+            status.innerText =
+                "Unable to create customer: " + error.message;
+        }
+
+        return;
+    }
+
+    status.innerText =
+        "Customer created successfully.";
+
+    generateQR();
+}
+
+
+document
+    .getElementById("createCustomerButton")
+    .addEventListener("click", createCustomer);
 
 async function logoutAdmin() {
 
