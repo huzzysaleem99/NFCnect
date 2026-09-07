@@ -131,7 +131,7 @@ if (profilePhoto) {
       await photoResponse.arrayBuffer()
     );
 
-    const photo = await loadImage(photoBuffer);
+    const photo = await loadImage(new Uint8Array(photoBuffer));
 
     // Circular crop
     ctx.save();
@@ -166,11 +166,16 @@ if (profilePhoto) {
     ctx.lineWidth = 3;
     ctx.stroke();
 
-  } catch (photoError) {
-    console.error("Profile photo error:", photoError);
+ } catch (photoError) {
+  console.error("Profile photo error:", photoError);
 
-    drawInitial(ctx, name);
-  }
+  return res.status(500).json({
+    error: "Profile photo failed",
+    message: photoError.message,
+    photoUrl: profilePhoto
+  });
+}
+  
 } else {
   drawInitial(ctx, name);
 }
