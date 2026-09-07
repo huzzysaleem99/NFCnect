@@ -20,6 +20,28 @@ const fontPath = path.join(
 
 GlobalFonts.registerFromPath(fontPath, "Inter");
 
+function drawInitial(ctx, name) {
+  ctx.beginPath();
+  ctx.arc(190, 315, 90, 0, Math.PI * 2);
+
+  ctx.fillStyle = "#080808";
+  ctx.fill();
+
+  ctx.strokeStyle = "#D6B777";
+  ctx.lineWidth = 3;
+  ctx.stroke();
+
+  ctx.fillStyle = "#D6B777";
+  ctx.font = "64px Inter";
+  ctx.textAlign = "center";
+
+  ctx.fillText(
+    name.charAt(0).toUpperCase(),
+    190,
+    338
+  );
+}
+
 export default async function handler(req, res) {
   try {
     const cardId = req.query.cardId;
@@ -96,26 +118,62 @@ export default async function handler(req, res) {
       115
     );
 
-    // Initial circle
-ctx.beginPath();
-ctx.arc(190, 315, 90, 0, Math.PI * 2);
+    // Profile photo / initial
+if (profilePhoto) {
+  try {
+    const photoResponse = await fetch(profilePhoto);
 
-ctx.fillStyle = "#080808";
-ctx.fill();
+    if (!photoResponse.ok) {
+      throw new Error("Could not download profile photo");
+    }
 
-ctx.strokeStyle = "#D6B777";
-ctx.lineWidth = 3;
-ctx.stroke();
+    const photoBuffer = Buffer.from(
+      await photoResponse.arrayBuffer()
+    );
 
-// Initial
-ctx.fillStyle = "#D6B777";
-ctx.font = "64px Inter";
-ctx.textAlign = "center";
-ctx.fillText(
-  name.charAt(0).toUpperCase(),
-  190,
-  338
-);
+    const photo = await loadImage(photoBuffer);
+
+    // Circular crop
+    ctx.save();
+
+    ctx.beginPath();
+    ctx.arc(190, 315, 90, 0, Math.PI * 2);
+    ctx.clip();
+
+    // Crop photo to fill circle
+    const size = Math.min(photo.width, photo.height);
+    const sourceX = (photo.width - size) / 2;
+    const sourceY = (photo.height - size) / 2;
+
+    ctx.drawImage(
+      photo,
+      sourceX,
+      sourceY,
+      size,
+      size,
+      100,
+      225,
+      180,
+      180
+    );
+
+    ctx.restore();
+
+    // Gold border
+    ctx.beginPath();
+    ctx.arc(190, 315, 90, 0, Math.PI * 2);
+    ctx.strokeStyle = "#D6B777";
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+  } catch (photoError) {
+    console.error("Profile photo error:", photoError);
+
+    drawInitial(ctx, name);
+  }
+} else {
+  drawInitial(ctx, name);
+}
 
     // Name
     ctx.textAlign = "left";
