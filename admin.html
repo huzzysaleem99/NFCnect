@@ -844,20 +844,24 @@ document
     .getElementById("loadCustomerButton")
     .addEventListener("click", loadCustomer);
 
-    async function uploadProfilePhoto(cardId) {
+   async function uploadProfilePhoto(cardId) {
 
     const fileInput =
         document.getElementById("profilePhoto");
+
+    if (!fileInput) {
+        throw new Error("Profile photo input was not found.");
+    }
 
     const file =
         fileInput.files[0];
 
     if (!file) {
-        return null;
+        throw new Error("No profile photo selected.");
     }
 
     const fileExtension =
-        file.name.split(".").pop();
+        file.name.split(".").pop().toLowerCase();
 
     const fileName =
         `${cardId}-${Date.now()}.${fileExtension}`;
@@ -865,27 +869,30 @@ document
     const filePath =
         `customers/${fileName}`;
 
-    const { error: uploadError } =
+    const { data: uploadData, error: uploadError } =
         await supabaseClient.storage
             .from("profile-photos")
             .upload(filePath, file, {
                 cacheControl: "3600",
-                upsert: true
+                upsert: false
             });
 
     if (uploadError) {
-        console.error(uploadError);
+        console.error("PHOTO UPLOAD ERROR:", uploadError);
         throw uploadError;
     }
 
-    const { data } =
+    const { data: publicUrlData } =
         supabaseClient.storage
             .from("profile-photos")
             .getPublicUrl(filePath);
 
-    return data.publicUrl;
+    if (!publicUrlData || !publicUrlData.publicUrl) {
+        throw new Error("Could not create photo URL.");
+    }
+
+    return publicUrlData.publicUrl;
 }
-    
 
    async function createCustomer() {
 
