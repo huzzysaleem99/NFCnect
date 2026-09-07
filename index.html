@@ -1,711 +1,2172 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#050505"
+    >
 
     <title>VEUQO Digital Card</title>
 
-<style>
 
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+    <style>
 
-* {
-    box-sizing: border-box;
-}
+        @import url(
+            'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap'
+        );
 
-body {
-    margin: 0;
-    min-height: 100vh;
-    font-family: 'Montserrat', sans-serif;
 
-    background: #050505;
-    color: #ffffff;
+        * {
+            box-sizing: border-box;
+        }
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
 
-    padding: 25px;
-}
+        html {
+            background: #050505;
+        }
 
 
-/* MAIN CARD */
+        body {
 
-.card {
-    width: 100%;
-    max-width: 420px;
+            margin: 0;
 
-    background:
-        radial-gradient(
-            circle at top,
-            rgba(255,255,255,0.025),
-            transparent 35%
-        ),
-        #0d0d0d;
+            min-height: 100vh;
 
-    border: 1px solid rgba(201,162,39,0.55);
-    border-radius: 28px;
+            font-family:
+                'Montserrat',
+                sans-serif;
 
-    padding: 48px 30px 38px;
+            background:
+                radial-gradient(
+                    circle at top,
+                    #191919 0%,
+                    #090909 40%,
+                    #050505 75%
+                );
 
-    text-align: center;
+            color: #ffffff;
 
-    box-shadow:
-        0 25px 60px rgba(0,0,0,0.45),
-        0 0 30px rgba(201,162,39,0.06);
-}
+        }
 
 
-/* LOGO */
+        /*
+        ========================================
+        PAGE
+        ========================================
+        */
 
-.logo {
-    color: #c9a227;
+        .page {
 
-    font-size: 30px;
-    font-weight: 700;
+            width: 100%;
 
-    letter-spacing: 8px;
+            max-width: 460px;
 
-    margin-bottom: 45px;
-}
+            margin: 0 auto;
 
+            padding:
+                24px
+                18px
+                45px;
 
-/* PROFILE */
+        }
 
-h1 {
-    margin: 0;
 
-    font-size: 28px;
-    font-weight: 600;
+        /*
+        ========================================
+        LOADING / ERROR
+        ========================================
+        */
 
-    letter-spacing: 0.2px;
-}
+        #loading,
+        #error {
 
-.job {
-    color: #c9a227;
+            padding: 80px 20px;
 
-    font-size: 16px;
-    font-weight: 500;
+            text-align: center;
 
-    margin-top: 10px;
-}
+            color: #c9a227;
 
-.company {
-    color: #b5b5b5;
+            font-size: 13px;
 
-    font-size: 14px;
+            letter-spacing: 1px;
 
-    margin-top: 6px;
-    margin-bottom: 34px;
-}
+        }
 
 
-/* MAIN CONTACT BUTTONS */
+        /*
+        ========================================
+        WALLET CARD
+        ========================================
+        */
 
-.button {
-    position: relative;
+        .wallet-card {
 
-    display: flex;
-    align-items: center;
+            position: relative;
 
-    width: 100%;
-    min-height: 60px;
+            width: 100%;
 
-    margin: 11px 0;
+            min-height: 335px;
 
-    padding: 0 48px 0 20px;
+            padding:
+                24px
+                24px
+                30px;
 
-    background: #111111;
+            overflow: hidden;
 
-    border: 1px solid rgba(201,162,39,0.55);
-    border-radius: 15px;
+            border:
 
-    color: #ffffff;
+                1px solid
+                rgba(
+                    201,
+                    162,
+                    39,
+                    0.55
+                );
 
-    text-decoration: none;
+            border-radius: 30px;
 
-    font-family: 'Montserrat', sans-serif;
+            background:
 
-    font-size: 15px;
-    font-weight: 500;
+                radial-gradient(
+                    circle at 90% 10%,
+                    rgba(
+                        201,
+                        162,
+                        39,
+                        0.15
+                    ),
+                    transparent 32%
+                ),
 
-    transition: 0.2s ease;
-}
+                linear-gradient(
+                    145deg,
+                    #171717 0%,
+                    #0d0d0d 55%,
+                    #050505 100%
+                );
 
-.button:hover {
-    background: #171717;
-    border-color: #c9a227;
-}
+            box-shadow:
 
+                0 25px 60px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    0.55
+                ),
 
-/* STANDARD ICON */
+                0 0 35px
+                rgba(
+                    201,
+                    162,
+                    39,
+                    0.06
+                );
 
-.icon {
-    width: 30px;
+        }
 
-    margin-right: 16px;
 
-    color: #c9a227;
+        /*
+        Subtle decorative gold circle.
+        */
 
-    font-size: 21px;
-    font-weight: 600;
+        .wallet-card::after {
 
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-}
+            content: "";
 
+            position: absolute;
 
-/* LINKEDIN */
+            width: 230px;
 
-.linkedin-icon {
-    width: 22px;
-    height: 22px;
+            height: 230px;
 
-    margin-right: 16px;
+            right: -120px;
 
-    flex-shrink: 0;
+            bottom: -120px;
 
-    fill: #0A66C2;
-}
+            border-radius: 50%;
 
+            background:
 
-/* SOCIAL ICONS */
+                rgba(
+                    201,
+                    162,
+                    39,
+                    0.07
+                );
 
-.social-svg {
-    display: block;
+            border:
 
-    width: 23px;
-    height: 23px;
+                1px solid
+                rgba(
+                    201,
+                    162,
+                    39,
+                    0.10
+                );
 
-    min-width: 23px;
+            pointer-events: none;
 
-    margin-right: 16px;
+        }
 
-    flex-shrink: 0;
-}
 
-.instagram-svg {
-    fill: #E4405F;
-}
+        /*
+        ========================================
+        CARD HEADER
+        ========================================
+        */
 
-.facebook-svg {
-    fill: #1877F2;
-}
+        .wallet-top {
 
+            position: relative;
 
-/* GOLD ARROWS */
+            z-index: 2;
 
-.button:not(.save-contact)::after {
-    content: "›";
+            display: flex;
 
-    position: absolute;
+            justify-content:
+                space-between;
 
-    right: 20px;
+            align-items: center;
 
-    color: #c9a227;
+        }
 
-    font-size: 30px;
-    font-weight: 300;
 
-    line-height: 1;
-}
+        .brand {
 
+            color: #c9a227;
 
-/* SAVE CONTACT */
+            font-size: 18px;
 
-.button.save-contact {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+            font-weight: 700;
 
-    width: 100%;
-    min-height: 60px;
+            letter-spacing: 5px;
 
-    margin-top: 32px;
+        }
 
-    padding: 0 28px;
 
-    background: #f4f4f4;
+        /*
+        NFC-style symbol.
+        */
 
-    color: #090909;
+        .nfc-symbol {
 
-    border: none;
-    border-radius: 999px;
+            width: 28px;
 
-    font-family: 'Montserrat', sans-serif;
+            height: 28px;
 
-    font-size: 14px;
-    font-weight: 700;
+            color: #c9a227;
 
-    letter-spacing: 2.4px;
+            opacity: 0.9;
 
-    text-transform: uppercase;
+        }
 
-    box-shadow:
-        0 8px 20px rgba(0,0,0,0.18);
 
-    transition: 0.2s ease;
-}
+        /*
+        ========================================
+        PROFILE PHOTO
+        ========================================
+        */
 
-.button.save-contact:hover {
-    background: #ffffff;
-    border: none;
+        .photo-wrapper {
 
-    transform: translateY(-1px);
-}
+            position: relative;
 
-.save-icon {
-    font-size: 22px;
+            z-index: 2;
 
-    margin-right: 12px;
+            width: 106px;
 
-    line-height: 1;
+            height: 106px;
 
-    letter-spacing: 0;
-}
+            margin:
+                35px
+                auto
+                20px;
 
+        }
 
-/* PREMIUM QR SECTION */
 
-.qr-section {
-    width: 100%;
+        .profile-photo {
 
-    margin-top: 32px;
-    padding-top: 28px;
+            display: none;
 
-    border-top:
-        1px solid rgba(201,162,39,0.18);
+            width: 106px;
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+            height: 106px;
 
-#qrcode {
-    padding: 12px;
+            object-fit: cover;
 
-    background: #ffffff;
+            border-radius: 50%;
 
-    border:
-        1px solid rgba(201,162,39,0.55);
+            border:
 
-    border-radius: 18px;
+                3px solid
+                rgba(
+                    201,
+                    162,
+                    39,
+                    0.9
+                );
 
-    box-shadow:
-        0 12px 32px rgba(0,0,0,0.40),
-        0 0 22px rgba(201,162,39,0.10);
-}
+            box-shadow:
 
-#qrcode img,
-#qrcode canvas {
-    display: block;
+                0 10px 30px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    0.4
+                );
 
-    border-radius: 6px;
-}
+        }
 
-.qr-label {
-    margin-top: 14px;
 
-    color: #c9a227;
+        /*
+        Placeholder shown when customer
+        has no profile photo.
+        */
 
-    font-size: 10px;
-    font-weight: 600;
+        .photo-placeholder {
 
-    letter-spacing: 2px;
+            display: flex;
 
-    text-transform: uppercase;
-}
+            align-items: center;
 
+            justify-content: center;
 
-/* FOOTER */
+            width: 106px;
 
-.footer {
-    margin-top: 38px;
+            height: 106px;
 
-    color: #777777;
+            border-radius: 50%;
 
-    font-size: 12px;
-}
+            background: #111111;
 
+            border:
 
-/* ERROR */
+                2px solid
+                rgba(
+                    201,
+                    162,
+                    39,
+                    0.45
+                );
 
-#error {
-    color: #c9a227;
-}
+            color: #c9a227;
 
-</style>
-    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-    
+            font-size: 30px;
+
+            font-weight: 600;
+
+        }
+
+
+        /*
+        ========================================
+        PROFILE DETAILS
+        ========================================
+        */
+
+        .profile-name {
+
+            position: relative;
+
+            z-index: 2;
+
+            margin: 0;
+
+            text-align: center;
+
+            font-size: 25px;
+
+            font-weight: 700;
+
+            line-height: 1.25;
+
+        }
+
+
+        .profile-job {
+
+            position: relative;
+
+            z-index: 2;
+
+            margin-top: 8px;
+
+            text-align: center;
+
+            color: #d0d0d0;
+
+            font-size: 14px;
+
+            font-weight: 500;
+
+        }
+
+
+        .profile-company {
+
+            position: relative;
+
+            z-index: 2;
+
+            margin-top: 6px;
+
+            text-align: center;
+
+            color: #c9a227;
+
+            font-size: 13px;
+
+            font-weight: 500;
+
+        }
+
+
+        /*
+        ========================================
+        CONTACT SECTION
+        ========================================
+        */
+
+        .section-title {
+
+            margin:
+                28px
+                5px
+                12px;
+
+            color: #777777;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            letter-spacing: 2px;
+
+        }
+
+
+        .action-list {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 10px;
+
+        }
+
+
+        /*
+        ========================================
+        CONTACT BUTTON
+        ========================================
+        */
+
+        .action-button {
+
+            position: relative;
+
+            display: none;
+
+            align-items: center;
+
+            width: 100%;
+
+            min-height: 62px;
+
+            padding:
+                0
+                50px
+                0
+                18px;
+
+            background: #111111;
+
+            border:
+
+                1px solid
+                rgba(
+                    201,
+                    162,
+                    39,
+                    0.28
+                );
+
+            border-radius: 18px;
+
+            color: #ffffff;
+
+            text-decoration: none;
+
+            box-shadow:
+
+                0 8px 24px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    0.20
+                );
+
+            transition:
+                0.2s ease;
+
+        }
+
+
+        .action-button:hover {
+
+            background: #171717;
+
+            border-color:
+                rgba(
+                    201,
+                    162,
+                    39,
+                    0.65
+                );
+
+            transform:
+                translateY(-1px);
+
+        }
+
+
+        .action-button::after {
+
+            content: "›";
+
+            position: absolute;
+
+            right: 20px;
+
+            color: #c9a227;
+
+            font-size: 28px;
+
+            font-weight: 300;
+
+        }
+
+
+        /*
+        ========================================
+        BUTTON ICON
+        ========================================
+        */
+
+        .action-icon {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            width: 34px;
+
+            min-width: 34px;
+
+            margin-right: 14px;
+
+            color: #c9a227;
+
+        }
+
+
+        .action-icon svg {
+
+            display: block;
+
+            width: 22px;
+
+            height: 22px;
+
+            fill: currentColor;
+
+        }
+
+
+        .linkedin-icon {
+            color: #0A66C2;
+        }
+
+
+        .instagram-icon {
+            color: #E4405F;
+        }
+
+
+        .facebook-icon {
+            color: #1877F2;
+        }
+
+
+        /*
+        ========================================
+        BUTTON TEXT
+        ========================================
+        */
+
+        .action-text {
+
+            display: flex;
+
+            flex-direction: column;
+
+            text-align: left;
+
+        }
+
+
+        .action-label {
+
+            color: #777777;
+
+            font-size: 9px;
+
+            font-weight: 600;
+
+            letter-spacing: 1.4px;
+
+            text-transform: uppercase;
+
+        }
+
+
+        .action-name {
+
+            margin-top: 3px;
+
+            color: #ffffff;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+        }
+
+
+        /*
+        ========================================
+        SAVE CONTACT
+        ========================================
+        */
+
+        .save-contact {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            width: 100%;
+
+            min-height: 62px;
+
+            margin-top: 20px;
+
+            padding:
+                0
+                25px;
+
+            border-radius: 999px;
+
+            background: #f4f4f4;
+
+            color: #080808;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            letter-spacing: 2px;
+
+            box-shadow:
+
+                0 10px 30px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    0.35
+                );
+
+            transition:
+                0.2s ease;
+
+        }
+
+
+        .save-contact:hover {
+
+            background: #ffffff;
+
+            transform:
+                translateY(-1px);
+
+        }
+
+
+        .save-contact svg {
+
+            width: 20px;
+
+            height: 20px;
+
+            margin-right: 10px;
+
+            fill: currentColor;
+
+        }
+
+
+        /*
+        ========================================
+        FOOTER
+        ========================================
+        */
+
+        .footer {
+
+            margin-top: 32px;
+
+            text-align: center;
+
+            color: #555555;
+
+            font-size: 10px;
+
+            letter-spacing: 1.5px;
+
+        }
+
+
+        .footer-brand {
+
+            color: #c9a227;
+
+            font-weight: 700;
+
+            letter-spacing: 3px;
+
+        }
+
+
+        /*
+        ========================================
+        MOBILE
+        ========================================
+        */
+
+        @media (
+            max-width: 480px
+        ) {
+
+            .page {
+
+                padding:
+                    18px
+                    14px
+                    35px;
+
+            }
+
+
+            .wallet-card {
+
+                min-height: 320px;
+
+                padding:
+                    22px
+                    20px
+                    28px;
+
+                border-radius: 26px;
+
+            }
+
+
+            .profile-name {
+
+                font-size: 23px;
+
+            }
+
+        }
+
+    </style>
+
 </head>
+
 
 <body>
 
-<div class="card">
 
-    <div class="logo">VEUQO</div>
+<div class="page">
+
+
+    <!-- LOADING -->
 
     <div id="loading">
+
         Loading profile...
-    </div>
-
-<div id="profile" style="display:none;">
-
-    <img
-        id="profilePhoto"
-        src=""
-        alt="Profile photo"
-        style="
-            display:none;
-            width:110px;
-            height:110px;
-            object-fit:cover;
-            border-radius:50%;
-            margin:0 auto 20px;
-            border:3px solid #c9a227;
-        "
-    >
-
-    <h1 id="full_name"></h1>
-
-    <div class="job" id="job_title"></div>
-
-    <div class="company" id="company"></div>
-        
-
-        <a class="button" id="phone">
-            📞 Call
-        </a>
-
-        <a class="button" id="email">
-            ✉️ Email
-        </a>
-
-        <a class="button" id="website" target="_blank">
-            🌐 Website
-        </a>
-
- <a class="button" id="linkedin" target="_blank">
-
-    <svg class="linkedin-icon"
-         viewBox="0 0 24 24"
-         aria-hidden="true">
-        <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V8.98h3.42v1.57h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.29zM5.32 7.41a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.1 20.45H3.54V8.98H7.1v11.47z"/>
-    </svg>
-
-    <span>LinkedIn</span>
-
-<a class="button" id="instagram" target="_blank" style="display:none;">
-    <svg class="social-svg instagram-svg" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5zM17.25 6.4a1.05 1.05 0 1 1-1.05 1.05 1.05 1.05 0 0 1 1.05-1.05z"/>
-    </svg>
-
-    <span>Instagram</span>
-<a class="button" id="facebook" target="_blank" style="display:none;">
-    <svg class="social-svg facebook-svg" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M14 8h3V4h-3c-3.3 0-5 2-5 5v2H6v4h3v7h4v-7h3.5l.5-4h-4V9c0-.7.3-1 1-1z"/>
-    </svg>
-
-    <span>Facebook</span>
-</a>
-        
-        <a class="button save-contact" id="saveContact" href="#">
-    <span class="save-icon">♙+</span>
-    <span>SAVE CONTACT</span>
-</a>
-
-    <div class="qr-section">
-    <div id="qrcode"></div>
-    <div class="qr-label">Scan to Connect</div>
 
     </div>
+
+
+    <!-- ERROR -->
 
     <div id="error"></div>
 
-    <div class="footer">
-        Powered by VEUQO
+
+
+    <!-- PROFILE -->
+
+    <div
+        id="profile"
+        style="display:none;"
+    >
+
+
+        <!-- DIGITAL WALLET CARD -->
+
+        <div class="wallet-card">
+
+
+            <div class="wallet-top">
+
+
+                <div class="brand">
+
+                    VEUQO
+
+                </div>
+
+
+                <!-- NFC ICON -->
+
+                <svg
+                    class="nfc-symbol"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                >
+
+                    <path
+                        fill="currentColor"
+                        d="
+                        M7.2 6.1
+                        a8.3 8.3 0 0 1 0 11.8
+                        l1.4 1.4
+                        a10.3 10.3 0 0 0 0-14.6
+                        L7.2 6.1zm3 3
+                        a4.1 4.1 0 0 1 0 5.8
+                        l1.4 1.4
+                        a6.1 6.1 0 0 0 0-8.6
+                        l-1.4 1.4zm3 3
+                        a1 1 0 1 0 2 0
+                        a1 1 0 0 0-2 0z
+                        "
+                    />
+
+                </svg>
+
+
+            </div>
+
+
+
+            <!-- PROFILE PHOTO -->
+
+            <div class="photo-wrapper">
+
+
+                <img
+                    id="profilePhoto"
+                    class="profile-photo"
+                    src=""
+                    alt="Profile photo"
+                >
+
+
+                <div
+                    id="photoPlaceholder"
+                    class="photo-placeholder"
+                >
+
+                    V
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- NAME -->
+
+            <h1
+                id="full_name"
+                class="profile-name"
+            ></h1>
+
+
+
+            <!-- JOB TITLE -->
+
+            <div
+                id="job_title"
+                class="profile-job"
+            ></div>
+
+
+
+            <!-- COMPANY -->
+
+            <div
+                id="company"
+                class="profile-company"
+            ></div>
+
+
+        </div>
+
+
+
+        <!-- CONTACT DETAILS -->
+
+        <div class="section-title">
+
+            CONTACT DETAILS
+
+        </div>
+
+
+
+        <div class="action-list">
+
+
+            <!-- PHONE -->
+
+            <a
+                id="phone"
+                class="action-button"
+                href="#"
+            >
+
+                <span class="action-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                    >
+
+                        <path
+                            d="
+                            M6.6 10.8
+                            c1.6 3.1 3.5 5 6.6 6.6
+                            l2.2-2.2
+                            c.3-.3.7-.4 1.1-.2
+                            c1.2.4 2.5.7 3.8.7
+                            c.6 0 1 .4 1 1V20
+                            c0 .6-.4 1-1 1
+                            C10.8 21 3 13.2 3 3.7
+                            c0-.6.4-1 1-1h3.3
+                            c.6 0 1 .4 1 1
+                            c0 1.3.2 2.6.7 3.8
+                            c.1.4 0 .8-.3 1.1
+                            l-2.1 2.2z
+                            "
+                        />
+
+                    </svg>
+
+                </span>
+
+
+                <span class="action-text">
+
+                    <span class="action-label">
+                        Phone
+                    </span>
+
+                    <span class="action-name">
+                        Call
+                    </span>
+
+                </span>
+
+            </a>
+
+
+
+            <!-- EMAIL -->
+
+            <a
+                id="email"
+                class="action-button"
+                href="#"
+            >
+
+                <span class="action-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                    >
+
+                        <path
+                            d="
+                            M20 4H4
+                            c-1.1 0-2 .9-2 2
+                            v12
+                            c0 1.1.9 2 2 2
+                            h16
+                            c1.1 0 2-.9 2-2
+                            V6
+                            c0-1.1-.9-2-2-2zm0 4
+                            l-8 5-8-5V6
+                            l8 5 8-5v2z
+                            "
+                        />
+
+                    </svg>
+
+                </span>
+
+
+                <span class="action-text">
+
+                    <span class="action-label">
+                        Email
+                    </span>
+
+                    <span class="action-name">
+                        Send Email
+                    </span>
+
+                </span>
+
+            </a>
+
+
+
+            <!-- WEBSITE -->
+
+            <a
+                id="website"
+                class="action-button"
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+
+                <span class="action-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                    >
+
+                        <path
+                            d="
+                            M12 2
+                            a10 10 0 1 0 0 20
+                            a10 10 0 0 0 0-20zm6.9 6
+                            h-3
+                            a15.7 15.7 0 0 0-1.4-3.6
+                            A8.1 8.1 0 0 1 18.9 8z
+                            M12 4
+                            c.8 1.1 1.5 2.4 1.9 4
+                            h-3.8
+                            c.4-1.6 1.1-2.9 1.9-4z
+                            M4.3 14
+                            a8.4 8.4 0 0 1 0-4
+                            h3.4
+                            a16.9 16.9 0 0 0 0 4
+                            H4.3zm.8 2h3
+                            c.3 1.3.8 2.5 1.4 3.6
+                            A8.1 8.1 0 0 1 5.1 16z
+                            M8.1 8h-3
+                            a8.1 8.1 0 0 1 4.4-3.6
+                            A15.7 15.7 0 0 0 8.1 8z
+                            M12 20
+                            c-.8-1.1-1.5-2.4-1.9-4
+                            h3.8
+                            c-.4 1.6-1.1 2.9-1.9 4zm2.3-6H9.7
+                            a14.7 14.7 0 0 1 0-4
+                            h4.6
+                            a14.7 14.7 0 0 1 0 4zm.2 5.6
+                            c.6-1.1 1.1-2.3 1.4-3.6
+                            h3
+                            a8.1 8.1 0 0 1-4.4 3.6z
+                            M16.3 14
+                            a16.9 16.9 0 0 0 0-4
+                            h3.4
+                            a8.4 8.4 0 0 1 0 4
+                            h-3.4z
+                            "
+                        />
+
+                    </svg>
+
+                </span>
+
+
+                <span class="action-text">
+
+                    <span class="action-label">
+                        Online
+                    </span>
+
+                    <span class="action-name">
+                        Website
+                    </span>
+
+                </span>
+
+            </a>
+
+
+
+            <!-- LINKEDIN -->
+
+            <a
+                id="linkedin"
+                class="action-button"
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+
+                <span
+                    class="
+                        action-icon
+                        linkedin-icon
+                    "
+                >
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                    >
+
+                        <path
+                            d="
+                            M20.45 20.45
+                            h-3.56
+                            v-5.57
+                            c0-1.33-.03-3.04-1.85-3.04
+                            c-1.85 0-2.14 1.45-2.14 2.94
+                            v5.67
+                            H9.34
+                            V8.98
+                            h3.42
+                            v1.57
+                            h.05
+                            c.48-.9 1.64-1.85 3.37-1.85
+                            c3.6 0 4.27 2.37 4.27 5.46
+                            v6.29z
+                            M5.32 7.41
+                            a2.06 2.06 0 1 1 0-4.12
+                            a2.06 2.06 0 0 1 0 4.12z
+                            M7.1 20.45
+                            H3.54
+                            V8.98
+                            H7.1
+                            v11.47z
+                            "
+                        />
+
+                    </svg>
+
+                </span>
+
+
+                <span class="action-text">
+
+                    <span class="action-label">
+                        Social
+                    </span>
+
+                    <span class="action-name">
+                        LinkedIn
+                    </span>
+
+                </span>
+
+            </a>
+
+
+
+            <!-- INSTAGRAM -->
+
+            <a
+                id="instagram"
+                class="action-button"
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+
+                <span
+                    class="
+                        action-icon
+                        instagram-icon
+                    "
+                >
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                    >
+
+                        <path
+                            d="
+                            M7 2h10
+                            a5 5 0 0 1 5 5
+                            v10
+                            a5 5 0 0 1-5 5
+                            H7
+                            a5 5 0 0 1-5-5
+                            V7
+                            a5 5 0 0 1 5-5zm0 2
+                            a3 3 0 0 0-3 3
+                            v10
+                            a3 3 0 0 0 3 3
+                            h10
+                            a3 3 0 0 0 3-3
+                            V7
+                            a3 3 0 0 0-3-3
+                            H7zm5 3.5
+                            A4.5 4.5 0 1 1 7.5 12
+                            A4.5 4.5 0 0 1 12 7.5zm0 2
+                            A2.5 2.5 0 1 0 14.5 12
+                            A2.5 2.5 0 0 0 12 9.5zm5.25-3.1
+                            a1.05 1.05 0 1 1-1.05 1.05
+                            a1.05 1.05 0 0 1 1.05-1.05z
+                            "
+                        />
+
+                    </svg>
+
+                </span>
+
+
+                <span class="action-text">
+
+                    <span class="action-label">
+                        Social
+                    </span>
+
+                    <span class="action-name">
+                        Instagram
+                    </span>
+
+                </span>
+
+            </a>
+
+
+
+            <!-- FACEBOOK -->
+
+            <a
+                id="facebook"
+                class="action-button"
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+
+                <span
+                    class="
+                        action-icon
+                        facebook-icon
+                    "
+                >
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                    >
+
+                        <path
+                            d="
+                            M14 8h3V4h-3
+                            c-3.3 0-5 2-5 5
+                            v2H6
+                            v4h3
+                            v7h4
+                            v-7
+                            h3.5
+                            l.5-4
+                            h-4
+                            V9
+                            c0-.7.3-1 1-1z
+                            "
+                        />
+
+                    </svg>
+
+                </span>
+
+
+                <span class="action-text">
+
+                    <span class="action-label">
+                        Social
+                    </span>
+
+                    <span class="action-name">
+                        Facebook
+                    </span>
+
+                </span>
+
+            </a>
+
+
+        </div>
+
+
+
+        <!-- SAVE CONTACT -->
+
+        <a
+            id="saveContact"
+            class="save-contact"
+            href="#"
+        >
+
+            <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+            >
+
+                <path
+                    d="
+                    M15 12
+                    c2.21 0 4-1.79 4-4
+                    s-1.79-4-4-4
+                    s-4 1.79-4 4
+                    s1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4
+                    c-2.67 0-8 1.34-8 4
+                    v2h16v-2
+                    c0-2.66-5.33-4-8-4z
+                    "
+                />
+
+            </svg>
+
+
+            SAVE CONTACT
+
+        </a>
+
+
+
+        <!-- FOOTER -->
+
+        <div class="footer">
+
+            POWERED BY
+
+            <span class="footer-brand">
+                VEUQO
+            </span>
+
+        </div>
+
+
     </div>
+
 
 </div>
 
+
+
 <script>
 
-const SUPABASE_URL =
-"https://qldzzuqdzoarboonnizn.supabase.co/rest/v1";
 
-const SUPABASE_KEY =
-"sb_publishable_MOUxn_K0T9DpYe0ZZyk-TA_cMjATkVd";
+    /*
+    ========================================
+    SUPABASE
+    ========================================
+    */
 
-const pathParts = window.location.pathname.split("/").filter(Boolean);
-
-let CARD_ID = null;
-let currentPerson = null;
-
-if (pathParts[0] === "c" && pathParts[1]) {
-    CARD_ID = pathParts[1];
-}
+    const SUPABASE_URL =
+        "https://qldzzuqdzoarboonnizn.supabase.co/rest/v1";
 
 
-/* SHOW OR HIDE A BUTTON */
+    const SUPABASE_KEY =
+        "sb_publishable_MOUxn_K0T9DpYe0ZZyk-TA_cMjATkVd";
 
-function setButton(id, value, href) {
 
-    const button = document.getElementById(id);
 
-    if (!button) {
-        return;
+    /*
+    ========================================
+    CARD ID
+    ========================================
+    */
+
+    const pathParts =
+        window.location.pathname
+            .split("/")
+            .filter(Boolean);
+
+
+    let CARD_ID =
+        null;
+
+
+    let currentPerson =
+        null;
+
+
+    if (
+        pathParts[0] === "c" &&
+        pathParts[1]
+    ) {
+
+        CARD_ID =
+            pathParts[1];
+
     }
 
-    if (value && String(value).trim() !== "") {
-        button.href = href;
-        button.style.display = "flex";
-    } else {
-        button.style.display = "none";
-    }
-}
 
 
-/* LOAD PROFILE */
+    /*
+    ========================================
+    HELPER
+    ========================================
+    */
 
-async function loadProfile() {
+    function getElement(id) {
 
-    if (!CARD_ID) {
-        document.getElementById("loading").style.display = "none";
-        document.getElementById("error").innerText =
-            "No VEUQO card selected.";
-        return;
+        return document.getElementById(id);
+
     }
 
-    try {
 
-        const response = await fetch(
-            `${SUPABASE_URL}/Profiles?card_id=eq.${encodeURIComponent(CARD_ID)}&status=eq.active&select=*`,
-            {
-                headers: {
-                    "apikey": SUPABASE_KEY
-                }
-            }
-        );
 
-        if (!response.ok) {
-            throw new Error("Database request failed");
-        }
+    /*
+    ========================================
+    SHOW / HIDE PROFILE FIELD
+    ========================================
+    */
 
-        const profiles = await response.json();
+    function setText(
+        id,
+        value
+    ) {
 
-        document.getElementById("loading").style.display = "none";
+        const element =
+            getElement(id);
 
-        if (profiles.length === 0) {
-            document.getElementById("error").innerText =
-                "Profile not found.";
+
+        if (!element) {
             return;
         }
 
-        const person = profiles[0];
-        currentPerson = person;
 
-        const profilePhoto =
-    document.getElementById("profilePhoto");
+        if (
+            value &&
+            String(value).trim() !== ""
+        ) {
 
-if (person.profile_photo) {
-    profilePhoto.src = person.profile_photo;
-    profilePhoto.style.display = "block";
-} else {
-    profilePhoto.style.display = "none";
-}
+            element.innerText =
+                value;
 
+            element.style.display =
+                "block";
 
-        /* PROFILE DETAILS */
+        } else {
 
-        document.getElementById("full_name").innerText =
-            person.full_name || "";
+            element.innerText =
+                "";
 
-        document.getElementById("job_title").innerText =
-            person.job_title || "";
+            element.style.display =
+                "none";
 
-        document.getElementById("company").innerText =
-            person.company || "";
+        }
 
-
-        /* CONTACT BUTTONS */
-
-        setButton(
-            "phone",
-            person.phone,
-            `tel:${person.phone || ""}`
-        );
-
-        setButton(
-            "email",
-            person.email,
-            `mailto:${person.email || ""}`
-        );
-
-        setButton(
-            "website",
-            person.website,
-            person.website || "#"
-        );
-
-        setButton(
-            "linkedin",
-            person.linkedin,
-            person.linkedin || "#"
-        );
-
-        setButton(
-            "instagram",
-            person.instagram,
-            person.instagram || "#"
-        );
-
-        setButton(
-            "facebook",
-            person.facebook,
-            person.facebook || "#"
-        );
-
-
-        document.getElementById("profile").style.display =
-            "block";
-
-        const profileUrl = window.location.href;
-
-document.getElementById("qrcode").innerHTML = "";
-
-new QRCode(document.getElementById("qrcode"), {
-    text: profileUrl,
-    width: 160,
-    height: 160,
-    correctLevel: QRCode.CorrectLevel.H
-});
-
-    } catch (error) {
-
-        document.getElementById("loading").style.display = "none";
-
-        document.getElementById("error").innerText =
-            "Unable to load profile.";
-
-        console.error(error);
-    }
-}
-
-
-/* SAVE CONTACT */
-
-function escapeVCard(value) {
-
-    return String(value || "")
-        .replace(/\\/g, "\\\\")
-        .replace(/\n/g, "\\n")
-        .replace(/;/g, "\\;")
-        .replace(/,/g, "\\,");
-}
-
-
-function saveContact(event) {
-
-    event.preventDefault();
-
-    if (!currentPerson) {
-        return;
     }
 
-    const person = currentPerson;
-
-    const vCardLines = [
-        "BEGIN:VCARD",
-        "VERSION:3.0",
-        `FN:${escapeVCard(person.full_name)}`,
-        `ORG:${escapeVCard(person.company)}`,
-        `TITLE:${escapeVCard(person.job_title)}`
-    ];
 
 
-    if (person.phone) {
+    /*
+    ========================================
+    SHOW / HIDE BUTTON
+    ========================================
+    */
+
+    function setButton(
+        id,
+        value,
+        href
+    ) {
+
+        const button =
+            getElement(id);
+
+
+        if (!button) {
+            return;
+        }
+
+
+        if (
+            value &&
+            String(value).trim() !== ""
+        ) {
+
+            button.href =
+                href;
+
+            button.style.display =
+                "flex";
+
+        } else {
+
+            button.style.display =
+                "none";
+
+        }
+
+    }
+
+
+
+    /*
+    ========================================
+    PROFILE PHOTO
+    ========================================
+    */
+
+    function setProfilePhoto(
+        photoUrl
+    ) {
+
+        const photo =
+            getElement(
+                "profilePhoto"
+            );
+
+
+        const placeholder =
+            getElement(
+                "photoPlaceholder"
+            );
+
+
+        if (photoUrl) {
+
+            photo.src =
+                photoUrl;
+
+
+            photo.style.display =
+                "block";
+
+
+            placeholder.style.display =
+                "none";
+
+
+        } else {
+
+            photo.src =
+                "";
+
+
+            photo.style.display =
+                "none";
+
+
+            placeholder.style.display =
+                "flex";
+
+        }
+
+    }
+
+
+
+    /*
+    ========================================
+    LOAD PROFILE
+    ========================================
+    */
+
+    async function loadProfile() {
+
+
+        if (!CARD_ID) {
+
+            getElement(
+                "loading"
+            ).style.display =
+                "none";
+
+
+            getElement(
+                "error"
+            ).innerText =
+                "No VEUQO card selected.";
+
+
+            return;
+        }
+
+
+        try {
+
+
+            const response =
+                await fetch(
+
+                    `${SUPABASE_URL}/Profiles?card_id=eq.${encodeURIComponent(CARD_ID)}&status=eq.active&select=*`,
+
+                    {
+
+                        headers: {
+
+                            apikey:
+                                SUPABASE_KEY
+
+                        }
+
+                    }
+
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Database request failed"
+                );
+
+            }
+
+
+            const profiles =
+                await response.json();
+
+
+            getElement(
+                "loading"
+            ).style.display =
+                "none";
+
+
+            if (
+                !profiles ||
+                profiles.length === 0
+            ) {
+
+                getElement(
+                    "error"
+                ).innerText =
+                    "Profile not found.";
+
+
+                return;
+            }
+
+
+            const person =
+                profiles[0];
+
+
+            currentPerson =
+                person;
+
+
+
+            /*
+            PHOTO
+            */
+
+            setProfilePhoto(
+                person.profile_photo
+            );
+
+
+
+            /*
+            PROFILE DETAILS
+            */
+
+            setText(
+                "full_name",
+                person.full_name
+            );
+
+
+            setText(
+                "job_title",
+                person.job_title
+            );
+
+
+            setText(
+                "company",
+                person.company
+            );
+
+
+
+            /*
+            CONTACT BUTTONS
+            */
+
+            setButton(
+
+                "phone",
+
+                person.phone,
+
+                `tel:${person.phone || ""}`
+
+            );
+
+
+            setButton(
+
+                "email",
+
+                person.email,
+
+                `mailto:${person.email || ""}`
+
+            );
+
+
+            setButton(
+
+                "website",
+
+                person.website,
+
+                person.website || "#"
+
+            );
+
+
+            setButton(
+
+                "linkedin",
+
+                person.linkedin,
+
+                person.linkedin || "#"
+
+            );
+
+
+            setButton(
+
+                "instagram",
+
+                person.instagram,
+
+                person.instagram || "#"
+
+            );
+
+
+            setButton(
+
+                "facebook",
+
+                person.facebook,
+
+                person.facebook || "#"
+
+            );
+
+
+
+            /*
+            SHOW PROFILE
+            */
+
+            getElement(
+                "profile"
+            ).style.display =
+                "block";
+
+
+        } catch (error) {
+
+
+            console.error(
+                "PROFILE LOAD ERROR:",
+                error
+            );
+
+
+            getElement(
+                "loading"
+            ).style.display =
+                "none";
+
+
+            getElement(
+                "error"
+            ).innerText =
+                "Unable to load profile.";
+
+        }
+
+    }
+
+
+
+    /*
+    ========================================
+    VCARD ESCAPING
+    ========================================
+    */
+
+    function escapeVCard(
+        value
+    ) {
+
+        return String(
+            value || ""
+        )
+
+            .replace(
+                /\\/g,
+                "\\\\"
+            )
+
+            .replace(
+                /\n/g,
+                "\\n"
+            )
+
+            .replace(
+                /;/g,
+                "\\;"
+            )
+
+            .replace(
+                /,/g,
+                "\\,"
+            );
+
+    }
+
+
+
+    /*
+    ========================================
+    SAVE CONTACT
+    ========================================
+    */
+
+    function saveContact(
+        event
+    ) {
+
+
+        event.preventDefault();
+
+
+        if (!currentPerson) {
+            return;
+        }
+
+
+        const person =
+            currentPerson;
+
+
+
+        const vCardLines = [
+
+            "BEGIN:VCARD",
+
+            "VERSION:3.0",
+
+            `FN:${escapeVCard(
+                person.full_name
+            )}`
+
+        ];
+
+
+
+        /*
+        COMPANY
+        */
+
+        if (person.company) {
+
+            vCardLines.push(
+
+                `ORG:${escapeVCard(
+                    person.company
+                )}`
+
+            );
+
+        }
+
+
+
+        /*
+        JOB TITLE
+        */
+
+        if (person.job_title) {
+
+            vCardLines.push(
+
+                `TITLE:${escapeVCard(
+                    person.job_title
+                )}`
+
+            );
+
+        }
+
+
+
+        /*
+        PHONE
+        */
+
+        if (person.phone) {
+
+            vCardLines.push(
+
+                `TEL;TYPE=CELL:${escapeVCard(
+                    person.phone
+                )}`
+
+            );
+
+        }
+
+
+
+        /*
+        EMAIL
+        */
+
+        if (person.email) {
+
+            vCardLines.push(
+
+                `EMAIL;TYPE=INTERNET:${escapeVCard(
+                    person.email
+                )}`
+
+            );
+
+        }
+
+
+
+        /*
+        WEBSITE
+        */
+
+        if (person.website) {
+
+            vCardLines.push(
+
+                `URL:${escapeVCard(
+                    person.website
+                )}`
+
+            );
+
+        }
+
+
+
+        /*
+        SOCIAL LINKS
+        */
+
+        const socialLinks =
+            [];
+
+
+        if (person.linkedin) {
+
+            socialLinks.push(
+                `LinkedIn: ${person.linkedin}`
+            );
+
+        }
+
+
+        if (person.instagram) {
+
+            socialLinks.push(
+                `Instagram: ${person.instagram}`
+            );
+
+        }
+
+
+        if (person.facebook) {
+
+            socialLinks.push(
+                `Facebook: ${person.facebook}`
+            );
+
+        }
+
+
+        if (
+            socialLinks.length > 0
+        ) {
+
+            vCardLines.push(
+
+                `NOTE:${escapeVCard(
+                    socialLinks.join("\n")
+                )}`
+
+            );
+
+        }
+
+
+
         vCardLines.push(
-            `TEL;TYPE=CELL:${escapeVCard(person.phone)}`
+            "END:VCARD"
         );
-    }
 
-    if (person.email) {
-        vCardLines.push(
-            `EMAIL;TYPE=INTERNET:${escapeVCard(person.email)}`
+
+
+        const vCard =
+            vCardLines.join(
+                "\r\n"
+            );
+
+
+
+        const blob =
+            new Blob(
+
+                [vCard],
+
+                {
+                    type:
+                        "text/vcard;charset=utf-8"
+                }
+
+            );
+
+
+
+        const url =
+            URL.createObjectURL(
+                blob
+            );
+
+
+
+        const downloadLink =
+            document.createElement(
+                "a"
+            );
+
+
+
+        downloadLink.href =
+            url;
+
+
+
+        downloadLink.download =
+            `${person.full_name || "contact"}.vcf`;
+
+
+
+        document.body.appendChild(
+            downloadLink
         );
-    }
 
-    if (person.website) {
-        vCardLines.push(
-            `URL:${escapeVCard(person.website)}`
+
+
+        downloadLink.click();
+
+
+
+        document.body.removeChild(
+            downloadLink
         );
-    }
 
 
-    const socialLinks = [];
 
-    if (person.linkedin) {
-        socialLinks.push(`LinkedIn: ${person.linkedin}`);
-    }
+        setTimeout(
+            () => {
 
-    if (person.instagram) {
-        socialLinks.push(`Instagram: ${person.instagram}`);
-    }
+                URL.revokeObjectURL(
+                    url
+                );
 
-    if (person.facebook) {
-        socialLinks.push(`Facebook: ${person.facebook}`);
-    }
-
-    if (socialLinks.length > 0) {
-        vCardLines.push(
-            `NOTE:${escapeVCard(socialLinks.join("\n"))}`
+            },
+            1000
         );
+
     }
 
 
-    vCardLines.push("END:VCARD");
 
-    const vCard = vCardLines.join("\r\n");
+    /*
+    ========================================
+    SAVE CONTACT BUTTON
+    ========================================
+    */
 
-    const blob = new Blob(
-        [vCard],
-        { type: "text/vcard;charset=utf-8" }
+    getElement(
+        "saveContact"
+    ).addEventListener(
+        "click",
+        saveContact
     );
 
-    const url = URL.createObjectURL(blob);
-
-    const downloadLink = document.createElement("a");
-
-    downloadLink.href = url;
-
-    downloadLink.download =
-        `${person.full_name || "contact"}.vcf`;
-
-    document.body.appendChild(downloadLink);
-
-    downloadLink.click();
-
-    document.body.removeChild(downloadLink);
-
-    setTimeout(() => {
-        URL.revokeObjectURL(url);
-    }, 1000);
-}
 
 
-/* SAVE CONTACT BUTTON */
+    /*
+    ========================================
+    START
+    ========================================
+    */
 
-document.getElementById("saveContact")
-    .addEventListener("click", saveContact);
+    loadProfile();
 
-
-/* START */
-
-loadProfile();
 
 </script>
 
+
 </body>
+
 </html>
