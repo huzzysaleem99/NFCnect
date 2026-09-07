@@ -1,6 +1,7 @@
 import {
   createCanvas,
-  GlobalFonts
+  GlobalFonts,
+  loadImage
 } from "@napi-rs/canvas";
 
 import path from "node:path";
