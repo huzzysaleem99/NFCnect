@@ -218,15 +218,16 @@ if (profilePhoto) {
       535
     );
 
-    const image = await canvas.encode("png");
+   const image = await canvas.encode("png");
 
-    res.setHeader("Content-Type", "image/png");
-    res.setHeader(
-      "Cache-Control",
-      "public, max-age=0, s-maxage=60"
-    );
+res.setHeader("Content-Type", "image/png");
+res.setHeader("Content-Length", image.length);
+res.setHeader(
+  "Cache-Control",
+  "public, max-age=3600, s-maxage=3600"
+);
 
-    return res.status(200).send(image);
+return res.status(200).send(image);
 
   } catch (error) {
     console.error("VEUQO preview error:", error);
