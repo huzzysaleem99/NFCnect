@@ -1,1412 +1,2257 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta charset="UTF-8">
+    <title>VEUQO Production</title>
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<title>VEUQO Production</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+        * {
+            box-sizing: border-box;
+        }
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: 'Montserrat', sans-serif;
+            background: #050505;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 25px;
+        }
 
-<style>
+        .panel {
+            width: 100%;
+            max-width: 1100px;
+            background: #0d0d0d;
+            border: 1px solid rgba(201, 162, 39, 0.55);
+            border-radius: 24px;
+            padding: 38px 34px;
+            text-align: center;
+        }
 
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+        .logo {
+            color: #c9a227;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 7px;
+            margin-bottom: 8px;
+        }
 
-* {
-    box-sizing: border-box;
-}
+        .subtitle {
+            color: #777777;
+            font-size: 11px;
+            letter-spacing: 2px;
+            margin-bottom: 34px;
+        }
 
-body {
-    margin: 0;
-    min-height: 100vh;
-    font-family: 'Montserrat', sans-serif;
-    background: #050505;
-    color: #ffffff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 25px;
-}
+        .section {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(201, 162, 39, 0.18);
+        }
 
-.panel {
-    width: 100%;
-    max-width: 1100px;
-    background: #0d0d0d;
-    border: 1px solid rgba(201,162,39,0.55);
-    border-radius: 24px;
-    padding: 38px 34px;
-    text-align: center;
-}
+        label {
+            display: block;
+            text-align: left;
+            margin-bottom: 8px;
+            color: #c9a227;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
 
-.logo {
-    color: #c9a227;
-    font-size: 28px;
-    font-weight: 700;
-    letter-spacing: 7px;
-    margin-bottom: 8px;
-}
+        input {
+            width: 100%;
+            padding: 16px;
+            background: #111111;
+            color: #ffffff;
+            border: 1px solid rgba(201, 162, 39, 0.45);
+            border-radius: 12px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 15px;
+            outline: none;
+        }
 
-.subtitle {
-    color: #777777;
-    font-size: 11px;
-    letter-spacing: 2px;
-    margin-bottom: 34px;
-}
+        input:focus {
+            border-color: #c9a227;
+        }
 
-label {
-    display: block;
-    text-align: left;
-    margin-bottom: 8px;
-    color: #c9a227;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 1px;
-}
+        button {
+            width: 100%;
+            margin-top: 16px;
+            padding: 16px;
+            border: none;
+            border-radius: 999px;
+            background: #f4f4f4;
+            color: #080808;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+        }
 
-input {
-    width: 100%;
-    padding: 16px;
-    background: #111111;
-    color: #ffffff;
-    border: 1px solid rgba(201,162,39,0.45);
-    border-radius: 12px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 15px;
-    outline: none;
-}
+        button:hover {
+            opacity: 0.9;
+        }
 
-input:focus {
-    border-color: #c9a227;
-}
+        button:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+        }
 
-button {
-    width: 100%;
-    margin-top: 16px;
-    padding: 16px;
-    border: none;
-    border-radius: 999px;
-    background: #f4f4f4;
-    color: #080808;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    cursor: pointer;
-}
+        .secondary-button {
+            background: transparent;
+            color: #c9a227;
+            border: 1px solid rgba(201, 162, 39, 0.55);
+        }
 
-button:hover {
-    opacity: 0.9;
-}
+        .secondary-button:hover {
+            background: rgba(201, 162, 39, 0.08);
+            opacity: 1;
+        }
 
+        .logout-button {
+            margin-top: 45px;
+            background: transparent;
+            color: #ff4d4d;
+            border: 1px solid #ff4d4d;
+        }
 
-/* MANAGE CUSTOMER */
+        .logout-button:hover {
+            background: #ff4d4d;
+            color: #ffffff;
+            opacity: 1;
+        }
 
-#manageCustomerSection {
-    margin-bottom: 35px;
-    padding-bottom: 30px;
-    border-bottom: 1px solid rgba(201,162,39,0.18);
-}
+        .status {
+            margin-top: 14px;
+            min-height: 18px;
+            font-size: 12px;
+            color: #c9a227;
+        }
 
+        #customerForm {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 25px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
 
-/* CUSTOMER DETAILS - 3 FIELDS PER ROW */
+        .form-field {
+            display: flex;
+            flex-direction: column;
+        }
 
-#customerForm {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    margin-top: 25px;
-    margin-bottom: 30px;
-    text-align: left;
-}
+        .form-field label {
+            margin-bottom: 8px;
+        }
 
-.form-field {
-    display: flex;
-    flex-direction: column;
-}
+        .photo-preview {
+            display: none;
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-top: 12px;
+            border: 1px solid rgba(201, 162, 39, 0.45);
+        }
 
-.form-field label {
-    margin-bottom: 8px;
-}
+        #removePhotoButton {
+            display: none;
+        }
 
-.form-field input {
-    width: 100%;
-}
+        .result {
+            display: none;
+            margin-top: 30px;
+            padding-top: 28px;
+            border-top: 1px solid rgba(201, 162, 39, 0.18);
+        }
 
+        #qrcode {
+            display: inline-block;
+            padding: 12px;
+            background: #ffffff;
+            border-radius: 14px;
+            margin: 18px 0;
+        }
 
-/* SECONDARY GOLD BUTTON */
+        #qrcode img,
+        #qrcode canvas {
+            display: block;
+        }
 
-.secondary-button {
-    background: transparent;
-    color: #c9a227;
-    border: 1px solid rgba(201,162,39,0.55);
-}
+        .profile-url {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #aaaaaa;
+            word-break: break-all;
+        }
 
-.secondary-button:hover {
-    background: rgba(201,162,39,0.08);
-    opacity: 1;
-}
+        @media (max-width: 850px) {
+            #customerForm {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
 
+        @media (max-width: 600px) {
+            body {
+                padding: 15px;
+            }
 
-/* STATUS MESSAGES */
+            .panel {
+                padding: 30px 20px;
+            }
 
-.status {
-    margin-top: 14px;
-    font-size: 12px;
-    color: #c9a227;
-}
-
-
-/* QR RESULT */
-
-.result {
-    display: none;
-    margin-top: 30px;
-    padding-top: 28px;
-    border-top: 1px solid rgba(201,162,39,0.18);
-}
-
-#qrcode {
-    display: inline-block;
-    padding: 12px;
-    background: #ffffff;
-    border-radius: 14px;
-    margin: 18px 0;
-}
-
-#qrcode img,
-#qrcode canvas {
-    display: block;
-}
-
-.profile-url {
-    margin-top: 10px;
-    font-size: 12px;
-    color: #aaaaaa;
-    word-break: break-all;
-}
-
-
-/* LOG OUT */
-
-.logout-button {
-    margin-top: 45px;
-    background: transparent;
-    color: #ff4d4d;
-    border: 1px solid #ff4d4d;
-}
-
-.logout-button:hover {
-    background: #ff4d4d;
-    color: #ffffff;
-    opacity: 1;
-}
-
-
-/* TABLET */
-
-@media (max-width: 850px) {
-
-    #customerForm {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-}
-
-
-/* MOBILE */
-
-@media (max-width: 600px) {
-
-    body {
-        padding: 15px;
-        align-items: flex-start;
-    }
-
-    .panel {
-        padding: 30px 20px;
-    }
-
-    #customerForm {
-        grid-template-columns: 1fr;
-    }
-
-}
-
-</style>
-
+            #customerForm {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="panel">
+    <div class="panel">
 
-    <div class="logo">VEUQO</div>
+        <div class="logo">
+            VEUQO
+        </div>
 
-    <div class="subtitle">
-        CARD PRODUCTION
-    </div>
-
-    <div id="loginSection">
-
-    <label for="adminEmail">
-        EMAIL
-    </label>
-
-    <input
-        id="adminEmail"
-        type="email"
-        placeholder="you@example.com"
-    >
-
-    <label
-        for="adminPassword"
-        style="margin-top:16px;"
-    >
-        PASSWORD
-    </label>
-
-    <input
-        id="adminPassword"
-        type="password"
-        placeholder="Password"
-    >
-
-    <button id="loginButton">
-        ADMIN LOGIN
-    </button>
-
-    <div class="status" id="loginStatus"></div>
-
-</div>
-
-    <div id="manageCustomerSection">
-
-    <label for="searchCardId">
-        MANAGE CUSTOMER
-    </label>
-
-    <input
-        id="searchCardId"
-        type="text"
-        placeholder="Enter Card ID e.g. VQ-ABC123"
-    >
-
-    <button
-        id="loadCustomerButton"
-        class="secondary-button"
-    >
-        LOAD CUSTOMER
-    </button>
-
-    <div
-        class="status"
-        id="manageStatus"
-    ></div>
-
- <div id="adminSection" style="display:none;">
-
-   <div id="customerForm">
-
-    <div class="form-field">
-        <label for="fullName">FULL NAME</label>
-        <input
-            id="fullName"
-            type="text"
-            placeholder="Customer name"
-        >
-    </div>
-
-    <div class="form-field">
-        <label for="jobTitle">JOB TITLE</label>
-        <input
-            id="jobTitle"
-            type="text"
-            placeholder="Job title"
-        >
-    </div>
-
-    <div class="form-field">
-        <label for="company">COMPANY</label>
-        <input
-            id="company"
-            type="text"
-            placeholder="Company"
-        >
-    </div>
-
-    <div class="form-field">
-        <label for="phone">PHONE</label>
-        <input
-            id="phone"
-            type="text"
-            placeholder="+44..."
-        >
-    </div>
-
-    <div class="form-field">
-        <label for="email">EMAIL</label>
-        <input
-            id="email"
-            type="email"
-            placeholder="customer@example.com"
-        >
-    </div>
-
-    <div class="form-field">
-        <label for="website">WEBSITE</label>
-        <input
-            id="website"
-            type="text"
-            placeholder="https://..."
-        >
-    </div>
-
-    <div class="form-field">
-        <label for="linkedin">LINKEDIN</label>
-        <input
-            id="linkedin"
-            type="text"
-            placeholder="https://linkedin.com/..."
-        >
-    </div>
-
-    <div class="form-field">
-        <label for="instagram">INSTAGRAM</label>
-        <input
-            id="instagram"
-            type="text"
-            placeholder="https://instagram.com/..."
-        >
-    </div>
-
-    <div class="form-field">
-        <label for="facebook">FACEBOOK</label>
-        <input
-            id="facebook"
-            type="text"
-            placeholder="https://facebook.com/..."
-        >
-    </div>
-
-       <div class="form-field">
-    <label for="profilePhoto">PROFILE PHOTO</label>
-
-    <input
-        id="profilePhoto"
-        type="file"
-        accept="image/*"
-    >
-
-    <img
-        id="profilePhotoPreview"
-        src=""
-        alt="Profile preview"
-        style="
-            display:none;
-            width:120px;
-            height:120px;
-            object-fit:cover;
-            border-radius:50%;
-            margin-top:12px;
-            border:1px solid rgba(201,162,39,0.45);
-        "
-    >
-
-   <button
-    type="button"
-    id="removePhotoButton"
-    class="secondary-button"
-    style="display:none;"
->
-    REMOVE PHOTO
-</button>
-           
-</div>
-
-</div>
+        <div class="subtitle">
+            CARD PRODUCTION
+        </div>
 
 
-    <label for="cardId" style="margin-top:22px;">
-        CARD ID
-    </label>
+        <!-- ADMIN LOGIN -->
 
-    <input
-        id="cardId"
-        type="text"
-        placeholder="VQ-7H42K9"
-    >
+        <div id="loginSection">
 
-    <button
-        id="generateIdButton"
-        class="secondary-button"
-    >
-        GENERATE CARD ID
-    </button>
+            <label for="adminEmail">
+                EMAIL
+            </label>
 
-    <button id="createCustomerButton">
-        CREATE CUSTOMER
-    </button>
+            <input
+                id="adminEmail"
+                type="email"
+                placeholder="you@example.com"
+                autocomplete="username"
+            >
 
-     <button id="saveChangesButton" class="secondary-button">
-    SAVE CHANGES
-</button>
+            <label
+                for="adminPassword"
+                style="margin-top:16px;"
+            >
+                PASSWORD
+            </label>
 
-    <button id="generateButton">
-        GENERATE QR
-    </button>
+            <input
+                id="adminPassword"
+                type="password"
+                placeholder="Password"
+                autocomplete="current-password"
+            >
+
+            <button
+                id="loginButton"
+                type="button"
+            >
+                ADMIN LOGIN
+            </button>
+
+            <div
+                class="status"
+                id="loginStatus"
+            ></div>
+
+        </div>
 
 
-    <div class="status" id="status"></div>
-
-
-    <div class="result" id="result">
-
-        <div id="qrcode"></div>
-
-        <button id="downloadQrButton">
-            DOWNLOAD QR
-        </button>
+        <!-- ADMIN AREA -->
 
         <div
-            class="profile-url"
-            id="profileUrl"
-        ></div>
+            id="adminSection"
+            style="display:none;"
+        >
+
+
+            <!-- MANAGE EXISTING CUSTOMER -->
+
+            <div id="manageCustomerSection">
+
+                <label for="searchCardId">
+                    MANAGE CUSTOMER
+                </label>
+
+                <input
+                    id="searchCardId"
+                    type="text"
+                    placeholder="Enter Card ID e.g. VQ-ABC123"
+                >
+
+                <button
+                    id="loadCustomerButton"
+                    type="button"
+                    class="secondary-button"
+                >
+                    LOAD CUSTOMER
+                </button>
+
+                <div
+                    class="status"
+                    id="manageStatus"
+                ></div>
+
+            </div>
+
+
+            <div class="section">
+
+
+                <!-- CUSTOMER DETAILS -->
+
+                <div id="customerForm">
+
+                    <div class="form-field">
+
+                        <label for="fullName">
+                            FULL NAME
+                        </label>
+
+                        <input
+                            id="fullName"
+                            type="text"
+                            placeholder="Customer name"
+                        >
+
+                    </div>
+
+
+                    <div class="form-field">
+
+                        <label for="jobTitle">
+                            JOB TITLE
+                        </label>
+
+                        <input
+                            id="jobTitle"
+                            type="text"
+                            placeholder="Job title"
+                        >
+
+                    </div>
+
+
+                    <div class="form-field">
+
+                        <label for="company">
+                            COMPANY
+                        </label>
+
+                        <input
+                            id="company"
+                            type="text"
+                            placeholder="Company"
+                        >
+
+                    </div>
+
+
+                    <div class="form-field">
+
+                        <label for="phone">
+                            PHONE
+                        </label>
+
+                        <input
+                            id="phone"
+                            type="text"
+                            placeholder="+44..."
+                        >
+
+                    </div>
+
+
+                    <div class="form-field">
+
+                        <label for="email">
+                            EMAIL
+                        </label>
+
+                        <input
+                            id="email"
+                            type="email"
+                            placeholder="customer@example.com"
+                        >
+
+                    </div>
+
+
+                    <div class="form-field">
+
+                        <label for="website">
+                            WEBSITE
+                        </label>
+
+                        <input
+                            id="website"
+                            type="text"
+                            placeholder="https://..."
+                        >
+
+                    </div>
+
+
+                    <div class="form-field">
+
+                        <label for="linkedin">
+                            LINKEDIN
+                        </label>
+
+                        <input
+                            id="linkedin"
+                            type="text"
+                            placeholder="https://linkedin.com/..."
+                        >
+
+                    </div>
+
+
+                    <div class="form-field">
+
+                        <label for="instagram">
+                            INSTAGRAM
+                        </label>
+
+                        <input
+                            id="instagram"
+                            type="text"
+                            placeholder="https://instagram.com/..."
+                        >
+
+                    </div>
+
+
+                    <div class="form-field">
+
+                        <label for="facebook">
+                            FACEBOOK
+                        </label>
+
+                        <input
+                            id="facebook"
+                            type="text"
+                            placeholder="https://facebook.com/..."
+                        >
+
+                    </div>
+
+
+                    <div class="form-field">
+
+                        <label for="profilePhoto">
+                            PROFILE PHOTO
+                        </label>
+
+                        <input
+                            id="profilePhoto"
+                            type="file"
+                            accept="image/*"
+                        >
+
+                        <img
+                            id="profilePhotoPreview"
+                            class="photo-preview"
+                            src=""
+                            alt="Profile preview"
+                        >
+
+                        <button
+                            id="removePhotoButton"
+                            type="button"
+                            class="secondary-button"
+                        >
+                            REMOVE PHOTO
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CARD ID -->
+
+                <label for="cardId">
+                    CARD ID
+                </label>
+
+                <input
+                    id="cardId"
+                    type="text"
+                    placeholder="VQ-7H42K9"
+                >
+
+
+                <button
+                    id="generateIdButton"
+                    type="button"
+                    class="secondary-button"
+                >
+                    GENERATE CARD ID
+                </button>
+
+
+                <button
+                    id="createCustomerButton"
+                    type="button"
+                >
+                    CREATE CUSTOMER
+                </button>
+
+
+                <button
+                    id="saveChangesButton"
+                    type="button"
+                    class="secondary-button"
+                >
+                    SAVE CHANGES
+                </button>
+
+
+                <button
+                    id="generateButton"
+                    type="button"
+                >
+                    GENERATE QR
+                </button>
+
+
+                <div
+                    class="status"
+                    id="status"
+                ></div>
+
+
+                <!-- QR RESULT -->
+
+                <div
+                    class="result"
+                    id="result"
+                >
+
+                    <div id="qrcode"></div>
+
+                    <button
+                        id="downloadQrButton"
+                        type="button"
+                    >
+                        DOWNLOAD QR
+                    </button>
+
+                    <div
+                        class="profile-url"
+                        id="profileUrl"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+            <button
+                id="logoutButton"
+                type="button"
+                class="logout-button"
+            >
+                LOG OUT
+            </button>
+
+        </div>
 
     </div>
 
 
-    <button
-        id="logoutButton"
-        class="logout-button"
-    >
-        LOG OUT
-    </button>
+    <script>
 
-</div>
-</div>
+        /*
+        ========================================
+        SUPABASE SETTINGS
+        ========================================
+        */
 
+        const SUPABASE_PROJECT_URL =
+            "https://qldzzuqdzoarboonnizn.supabase.co";
 
-<script>
+        const SUPABASE_KEY =
+            "sb_publishable_MOUxn_K0T9DpYe0ZZyk-TA_cMjATkVd";
 
-const supabaseClient = supabase.createClient(
-    "https://qldzzuqdzoarboonnizn.supabase.co",
-    "sb_publishable_MOUxn_K0T9DpYe0ZZyk-TA_cMjATkVd"
-);
-
-const SUPABASE_URL =
-    "https://qldzzuqdzoarboonnizn.supabase.co/rest/v1";
-
-const SUPABASE_KEY =
-    "sb_publishable_MOUxn_K0T9DpYe0ZZyk-TA_cMjATkVd";
+        const PROFILE_PHOTO_BUCKET =
+            "profile-photos";
 
 
-async function loginAdmin() {
-
-    const email =
-        document.getElementById("adminEmail").value.trim();
-
-    const password =
-        document.getElementById("adminPassword").value;
-
-    const loginStatus =
-        document.getElementById("loginStatus");
-
-    loginStatus.innerText = "Logging in...";
-
-    const { data, error } =
-        await supabaseClient.auth.signInWithPassword({
-            email: email,
-            password: password
-        });
-
-    if (error) {
-        loginStatus.innerText = error.message;
-        console.error(error);
-        return;
-    }
-
-    const userId = data.user.id;
-
-    const { data: adminRecord, error: adminError } =
-        await supabaseClient
-            .from("admin_users")
-            .select("user_id")
-            .eq("user_id", userId)
-            .single();
-
-    if (adminError || !adminRecord) {
-
-        await supabaseClient.auth.signOut();
-
-        loginStatus.innerText =
-            "This account is not authorised as an admin.";
-
-        return;
-    }
-
-    loginStatus.innerText = "";
-
-    document.getElementById("loginSection").style.display =
-        "none";
-
-    document.getElementById("adminSection").style.display =
-        "block";
-}
-
-
-document
-    .getElementById("loginButton")
-    .addEventListener("click", loginAdmin);
-
-
-async function checkAdminSession() {
-
-    const { data } =
-        await supabaseClient.auth.getSession();
-
-    const session = data.session;
-
-    if (!session) {
-        return;
-    }
-
-    const userId = session.user.id;
-
-    const { data: adminRecord, error } =
-        await supabaseClient
-            .from("admin_users")
-            .select("user_id")
-            .eq("user_id", userId)
-            .single();
-
-    if (error || !adminRecord) {
-
-        await supabaseClient.auth.signOut();
-
-        document.getElementById("loginStatus").innerText =
-            "This account is not authorised as an admin.";
-
-        document.getElementById("loginSection").style.display =
-            "block";
-
-        document.getElementById("adminSection").style.display =
-            "none";
-
-        return;
-    }
-
-    document.getElementById("loginSection").style.display =
-        "none";
-
-    document.getElementById("adminSection").style.display =
-        "block";
-}
-
-
-async function createCardId() {
-
-    const characters =
-        "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-
-    let unique = false;
-    let cardId = "";
-
-    while (!unique) {
-
-        let randomPart = "";
-
-        for (let i = 0; i < 6; i++) {
-
-            randomPart += characters.charAt(
-                Math.floor(Math.random() * characters.length)
+        const supabaseClient =
+            supabase.createClient(
+                SUPABASE_PROJECT_URL,
+                SUPABASE_KEY
             );
+
+
+        /*
+        ========================================
+        HELPERS
+        ========================================
+        */
+
+        const $ =
+            (id) => document.getElementById(id);
+
+
+        let previewObjectUrl = null;
+
+
+        function setStatus(
+            elementId,
+            message
+        ) {
+
+            $(elementId).innerText =
+                message;
         }
 
-        cardId = `VQ-${randomPart}`;
 
-        const response = await fetch(
-            `${SUPABASE_URL}/Profiles?card_id=eq.${encodeURIComponent(cardId)}&select=card_id`,
-            {
-                headers: {
-                    "apikey": SUPABASE_KEY
-                }
+        function fieldValue(id) {
+
+            const value =
+                $(id).value.trim();
+
+            return value || null;
+        }
+
+
+        function clearPreviewObjectUrl() {
+
+            if (previewObjectUrl) {
+
+                URL.revokeObjectURL(
+                    previewObjectUrl
+                );
+
+                previewObjectUrl = null;
             }
-        );
-
-        if (!response.ok) {
-
-            document.getElementById("status").innerText =
-                "Unable to check Card ID.";
-
-            return;
         }
 
-        const existing = await response.json();
 
-        if (existing.length === 0) {
-            unique = true;
-        }
-    }
+        function showProfilePhoto(photoUrl) {
 
-    document.getElementById("cardId").value =
-        cardId;
+            const preview =
+                $("profilePhotoPreview");
 
-    document.getElementById("status").innerText =
-        "Unique Card ID generated.";
-}
+            clearPreviewObjectUrl();
 
 
-document
-    .getElementById("generateIdButton")
-    .addEventListener("click", createCardId);
+            if (photoUrl) {
 
+                preview.src =
+                    photoUrl;
 
-function generateQR() {
+                preview.style.display =
+                    "block";
 
-    const status =
-        document.getElementById("status");
+                $("removePhotoButton").style.display =
+                    "block";
 
-    const cardId =
-        document
-            .getElementById("cardId")
-            .value
-            .trim();
+            } else {
 
-    if (!cardId) {
+                preview.src =
+                    "";
 
-        status.innerText =
-            "Enter a Card ID.";
+                preview.style.display =
+                    "none";
 
-        return;
-    }
-
-    if (typeof QRCode === "undefined") {
-
-        status.innerText =
-            "QR library failed to load.";
-
-        return;
-    }
-
-    const profileUrl =
-        `https://veuqo.co.uk/c/${encodeURIComponent(cardId)}`;
-
-    const qrContainer =
-        document.getElementById("qrcode");
-
-    qrContainer.innerHTML = "";
-
-    new QRCode(qrContainer, {
-        text: profileUrl,
-        width: 220,
-        height: 220,
-        colorDark: "#000000",
-        colorLight: "#ffffff",
-        correctLevel: QRCode.CorrectLevel.H
-    });
-
-    document.getElementById("profileUrl").innerText =
-        profileUrl;
-
-    document.getElementById("result").style.display =
-        "block";
-
-    status.innerText =
-        "QR generated successfully.";
-}
-
-
-document
-    .getElementById("generateButton")
-    .addEventListener("click", generateQR);
-
-
-function downloadQR() {
-
-    const qrContainer =
-        document.getElementById("qrcode");
-
-    const canvas =
-        qrContainer.querySelector("canvas");
-
-    const image =
-        qrContainer.querySelector("img");
-
-    let dataUrl = "";
-
-    if (canvas) {
-
-        dataUrl =
-            canvas.toDataURL("image/png");
-
-    } else if (image) {
-
-        dataUrl = image.src;
-
-    } else {
-
-        alert("Generate a QR code first.");
-        return;
-    }
-
-    const cardId =
-        document
-            .getElementById("cardId")
-            .value
-            .trim();
-
-    const link =
-        document.createElement("a");
-
-    link.href = dataUrl;
-
-    link.download =
-        `${cardId || "VEUQO"}-QR.png`;
-
-    document.body.appendChild(link);
-
-    link.click();
-
-    document.body.removeChild(link);
-}
-
-
-document
-    .getElementById("downloadQrButton")
-    .addEventListener("click", downloadQR);
-
-    async function loadCustomer() {
-
-    document.getElementById("profilePhoto").value = "";    
-
-    const manageStatus =
-        document.getElementById("manageStatus");
-
-    const cardId =
-        document
-            .getElementById("searchCardId")
-            .value
-            .trim();
-
-    if (!cardId) {
-        manageStatus.innerText =
-            "Enter a Card ID.";
-        return;
-    }
-
-    manageStatus.innerText =
-        "Loading customer...";
-
-    const { data, error } =
-        await supabaseClient
-            .from("Profiles")
-            .select("*")
-            .eq("card_id", cardId)
-            .single();
-
-    if (error || !data) {
-        console.error(error);
-
-        manageStatus.innerText =
-            "Customer not found.";
-
-        return;
-    }
-
-    document.getElementById("fullName").value =
-        data.full_name || "";
-
-    document.getElementById("jobTitle").value =
-        data.job_title || "";
-
-    document.getElementById("company").value =
-        data.company || "";
-
-    document.getElementById("phone").value =
-        data.phone || "";
-
-    document.getElementById("email").value =
-        data.email || "";
-
-    document.getElementById("website").value =
-        data.website || "";
-
-    document.getElementById("linkedin").value =
-        data.linkedin || "";
-
-    document.getElementById("instagram").value =
-        data.instagram || "";
-
-    document.getElementById("facebook").value =
-        data.facebook || "";
-
-    document.getElementById("cardId").value =
-        data.card_id;
-
-     const profilePhotoPreview =
-    document.getElementById("profilePhotoPreview");
-
-const removePhotoButton =
-    document.getElementById("removePhotoButton");
-
-if (data.profile_photo) {
-
-    profilePhotoPreview.src =
-        data.profile_photo;
-
-    profilePhotoPreview.style.display =
-        "block";
-
-    removePhotoButton.style.display =
-        "block";
-
-} else {
-
-    profilePhotoPreview.src =
-        "";
-
-    profilePhotoPreview.style.display =
-        "none";
-
-    removePhotoButton.style.display =
-        "none";
-}
-
-    manageStatus.innerText =
-        "Customer loaded successfully.";
-}
-
-
-document
-    .getElementById("loadCustomerButton")
-    .addEventListener("click", loadCustomer);
-
-   async function uploadProfilePhoto(cardId) {
-
-    const fileInput =
-        document.getElementById("profilePhoto");
-
-    if (!fileInput) {
-        throw new Error("Profile photo input was not found.");
-    }
-
-    const file =
-        fileInput.files[0];
-
-    // Photo is optional
-    if (!file) {
-        return null;
-    }
-
-    const fileExtension =
-        file.name.split(".").pop().toLowerCase();
-
-    const fileName =
-        `${cardId}-${Date.now()}.${fileExtension}`;
-
-    const filePath =
-        `customers/${fileName}`;
-
-    const { error: uploadError } =
-        await supabaseClient.storage
-            .from("profile-photos")
-            .upload(filePath, file, {
-                cacheControl: "3600",
-                upsert: false
-            });
-
-    if (uploadError) {
-        console.error("PHOTO UPLOAD ERROR:", uploadError);
-        throw uploadError;
-    }
-
-    const { data: publicUrlData } =
-        supabaseClient.storage
-            .from("profile-photos")
-            .getPublicUrl(filePath);
-
-    if (!publicUrlData || !publicUrlData.publicUrl) {
-        throw new Error("Could not create photo URL.");
-    }
-
-    return publicUrlData.publicUrl;
-}
-    
-   async function createCustomer() {
-
-    const status =
-        document.getElementById("status");
-
-    const cardId =
-        document.getElementById("cardId").value.trim();
-
-    const fullName =
-        document.getElementById("fullName").value.trim();
-
-    if (!cardId) {
-        status.innerText =
-            "Generate a Card ID first.";
-        return;
-    }
-
-    if (!fullName) {
-        status.innerText =
-            "Enter the customer's full name.";
-        return;
-    }
-
-    status.innerText =
-        "Uploading photo...";
-
-    let profilePhotoUrl = null;
-
-    try {
-        profilePhotoUrl =
-            await uploadProfilePhoto(cardId);
-    } catch (error) {
-        status.innerText =
-            "Photo upload failed: " + error.message;
-        return;
-    }
-
-    status.innerText =
-        "Creating customer...";
-
-    const customer = {
-        card_id: cardId,
-        full_name: fullName,
-
-        job_title:
-            document.getElementById("jobTitle").value.trim() || null,
-
-        company:
-            document.getElementById("company").value.trim() || null,
-
-        phone:
-            document.getElementById("phone").value.trim() || null,
-
-        email:
-            document.getElementById("email").value.trim() || null,
-
-        website:
-            document.getElementById("website").value.trim() || null,
-
-        linkedin:
-            document.getElementById("linkedin").value.trim() || null,
-
-        instagram:
-            document.getElementById("instagram").value.trim() || null,
-
-        facebook:
-            document.getElementById("facebook").value.trim() || null,
-
-        profile_photo:
-            profilePhotoUrl,
-
-        status:
-            "active"
-    };
-
-    const { error } =
-        await supabaseClient
-            .from("Profiles")
-            .insert(customer);
-
-    if (error) {
-
-        console.error(error);
-
-        if (error.code === "23505") {
-            status.innerText =
-                "That Card ID already exists. Generate another.";
-        } else {
-            status.innerText =
-                "Unable to create customer: " + error.message;
+                $("removePhotoButton").style.display =
+                    "none";
+            }
         }
 
-        return;
-    }
 
-    status.innerText =
-        "Customer created successfully.";
+        function showLocalPhotoPreview(file) {
 
-    generateQR();
-}
+            const preview =
+                $("profilePhotoPreview");
+
+            clearPreviewObjectUrl();
 
 
-document
-    .getElementById("createCustomerButton")
-    .addEventListener("click", createCustomer);
+            if (!file) {
+                return;
+            }
 
-    
-async function saveChanges() {
 
-    const status =
-        document.getElementById("status");
+            previewObjectUrl =
+                URL.createObjectURL(file);
 
-    const cardId =
-        document.getElementById("cardId").value.trim();
+            preview.src =
+                previewObjectUrl;
 
-    if (!cardId) {
-        status.innerText =
-            "Load a customer first.";
-        return;
-    }
+            preview.style.display =
+                "block";
+        }
 
-    status.innerText =
-        "Saving changes...";
 
-    // Get the customer's current photo before making changes
-    const { data: existingCustomer, error: fetchError } =
-        await supabaseClient
-            .from("Profiles")
-            .select("profile_photo")
-            .eq("card_id", cardId)
-            .single();
+        /*
+        ========================================
+        STORAGE PATH
+        ========================================
+        */
 
-    if (fetchError) {
-        console.error(fetchError);
+        function getStoragePathFromUrl(photoUrl) {
 
-        status.innerText =
-            "Unable to load existing customer.";
+            if (!photoUrl) {
+                return null;
+            }
 
-        return;
-    }
 
-    const oldPhotoUrl =
-        existingCustomer?.profile_photo || null;
+            try {
 
-    // Upload a newly selected photo, if there is one
-    let profilePhotoUrl = null;
+                const url =
+                    new URL(photoUrl);
 
-    try {
-        profilePhotoUrl =
-            await uploadProfilePhoto(cardId);
-    } catch (error) {
+                const marker =
+                    `/storage/v1/object/public/${PROFILE_PHOTO_BUCKET}/`;
 
-        status.innerText =
-            "Photo upload failed: " +
-            error.message;
+                const markerPosition =
+                    url.pathname.indexOf(marker);
 
-        return;
-    }
 
-    const updates = {
+                if (markerPosition === -1) {
 
-        full_name:
-            document.getElementById("fullName").value.trim(),
-
-        job_title:
-            document.getElementById("jobTitle").value.trim(),
-
-        company:
-            document.getElementById("company").value.trim(),
-
-        phone:
-            document.getElementById("phone").value.trim(),
-
-        email:
-            document.getElementById("email").value.trim(),
-
-        website:
-            document.getElementById("website").value.trim(),
-
-        linkedin:
-            document.getElementById("linkedin").value.trim(),
-
-        instagram:
-            document.getElementById("instagram").value.trim(),
-
-        facebook:
-            document.getElementById("facebook").value.trim()
-    };
-
-    // Only replace profile_photo if a new file was selected
-    if (profilePhotoUrl) {
-        updates.profile_photo =
-            profilePhotoUrl;
-    }
-
-    const { error: updateError } =
-        await supabaseClient
-            .from("Profiles")
-            .update(updates)
-            .eq("card_id", cardId);
-
-    if (updateError) {
-
-        console.error(updateError);
-
-        status.innerText =
-            "Unable to save changes: " +
-            updateError.message;
-
-        return;
-    }
-
-    // If a new photo replaced an old one,
-    // delete the old Storage file
-    if (
-        profilePhotoUrl &&
-        oldPhotoUrl &&
-        oldPhotoUrl !== profilePhotoUrl
-    ) {
-
-        try {
-
-            const marker =
-                "/profile-photos/";
-
-            const markerPosition =
-                oldPhotoUrl.indexOf(marker);
-
-            if (markerPosition !== -1) {
-
-                const oldFilePath =
-                    decodeURIComponent(
-                        oldPhotoUrl.substring(
-                            markerPosition + marker.length
-                        )
-                    );
-
-                const { error: deleteError } =
-                    await supabaseClient.storage
-                        .from("profile-photos")
-                        .remove([oldFilePath]);
-
-                if (deleteError) {
                     console.error(
-                        "OLD PHOTO DELETE ERROR:",
-                        deleteError
+                        "Could not identify Storage path:",
+                        photoUrl
                     );
+
+                    return null;
+                }
+
+
+                return decodeURIComponent(
+
+                    url.pathname.substring(
+                        markerPosition +
+                        marker.length
+                    )
+
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Invalid photo URL:",
+                    photoUrl,
+                    error
+                );
+
+                return null;
+            }
+        }
+
+
+        /*
+        ========================================
+        DELETE STORAGE PHOTO
+        ========================================
+        */
+
+        async function deleteStoragePhoto(
+            photoUrl
+        ) {
+
+            const filePath =
+                getStoragePathFromUrl(
+                    photoUrl
+                );
+
+
+            if (!filePath) {
+
+                return {
+                    success: false,
+                    error: new Error(
+                        "Could not identify the Storage file path."
+                    )
+                };
+            }
+
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient.storage
+                    .from(
+                        PROFILE_PHOTO_BUCKET
+                    )
+                    .remove([
+                        filePath
+                    ]);
+
+
+            if (error) {
+
+                console.error(
+                    "PHOTO DELETE ERROR:",
+                    error
+                );
+
+                return {
+                    success: false,
+                    error
+                };
+            }
+
+
+            console.log(
+                "Deleted Storage photo:",
+                filePath,
+                data
+            );
+
+
+            return {
+                success: true,
+                data
+            };
+        }
+
+
+        /*
+        ========================================
+        ADMIN AUTHORISATION
+        ========================================
+        */
+
+        async function isCurrentUserAdmin(
+            userId
+        ) {
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient
+                    .from("admin_users")
+                    .select("user_id")
+                    .eq(
+                        "user_id",
+                        userId
+                    )
+                    .maybeSingle();
+
+
+            return (
+                !error &&
+                Boolean(data)
+            );
+        }
+
+
+        /*
+        ========================================
+        ADMIN LOGIN
+        ========================================
+        */
+
+        async function loginAdmin() {
+
+            const email =
+                $("adminEmail").value.trim();
+
+            const password =
+                $("adminPassword").value;
+
+
+            setStatus(
+                "loginStatus",
+                "Logging in..."
+            );
+
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient.auth
+                    .signInWithPassword({
+                        email,
+                        password
+                    });
+
+
+            if (error) {
+
+                console.error(error);
+
+                setStatus(
+                    "loginStatus",
+                    error.message
+                );
+
+                return;
+            }
+
+
+            const authorised =
+                await isCurrentUserAdmin(
+                    data.user.id
+                );
+
+
+            if (!authorised) {
+
+                await supabaseClient.auth
+                    .signOut();
+
+
+                setStatus(
+                    "loginStatus",
+                    "This account is not authorised as an admin."
+                );
+
+                return;
+            }
+
+
+            setStatus(
+                "loginStatus",
+                ""
+            );
+
+
+            $("loginSection").style.display =
+                "none";
+
+            $("adminSection").style.display =
+                "block";
+        }
+
+
+        /*
+        ========================================
+        CHECK EXISTING SESSION
+        ========================================
+        */
+
+        async function checkAdminSession() {
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient.auth
+                    .getSession();
+
+
+            if (error) {
+
+                console.error(error);
+
+                return;
+            }
+
+
+            const session =
+                data.session;
+
+
+            if (!session) {
+
+                $("loginSection").style.display =
+                    "block";
+
+                $("adminSection").style.display =
+                    "none";
+
+                return;
+            }
+
+
+            const authorised =
+                await isCurrentUserAdmin(
+                    session.user.id
+                );
+
+
+            if (!authorised) {
+
+                await supabaseClient.auth
+                    .signOut();
+
+
+                setStatus(
+                    "loginStatus",
+                    "This account is not authorised as an admin."
+                );
+
+
+                $("loginSection").style.display =
+                    "block";
+
+                $("adminSection").style.display =
+                    "none";
+
+
+                return;
+            }
+
+
+            $("loginSection").style.display =
+                "none";
+
+            $("adminSection").style.display =
+                "block";
+        }
+
+
+        /*
+        ========================================
+        GENERATE CARD ID
+        ========================================
+        */
+
+        async function createCardId() {
+
+            const characters =
+                "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+            const maxAttempts =
+                20;
+
+
+            setStatus(
+                "status",
+                "Generating Card ID..."
+            );
+
+
+            for (
+                let attempt = 0;
+                attempt < maxAttempts;
+                attempt++
+            ) {
+
+                let randomPart =
+                    "";
+
+
+                for (
+                    let i = 0;
+                    i < 6;
+                    i++
+                ) {
+
+                    randomPart +=
+                        characters.charAt(
+
+                            Math.floor(
+                                Math.random() *
+                                characters.length
+                            )
+
+                        );
+                }
+
+
+                const cardId =
+                    `VQ-${randomPart}`;
+
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabaseClient
+                        .from("Profiles")
+                        .select("card_id")
+                        .eq(
+                            "card_id",
+                            cardId
+                        )
+                        .maybeSingle();
+
+
+                if (error) {
+
+                    console.error(error);
+
+                    setStatus(
+                        "status",
+                        "Unable to check Card ID."
+                    );
+
+                    return;
+                }
+
+
+                if (!data) {
+
+                    $("cardId").value =
+                        cardId;
+
+
+                    setStatus(
+                        "status",
+                        "Unique Card ID generated."
+                    );
+
+                    return;
                 }
             }
 
-        } catch (error) {
-            console.error(
-                "Unable to delete old photo:",
+
+            setStatus(
+                "status",
+                "Unable to generate a unique Card ID. Try again."
+            );
+        }
+
+
+        /*
+        ========================================
+        GENERATE QR
+        ========================================
+        */
+
+        function generateQR() {
+
+            const cardId =
+                $("cardId").value.trim();
+
+
+            if (!cardId) {
+
+                setStatus(
+                    "status",
+                    "Enter a Card ID."
+                );
+
+                return;
+            }
+
+
+            if (
+                typeof QRCode ===
+                "undefined"
+            ) {
+
+                setStatus(
+                    "status",
+                    "QR library failed to load."
+                );
+
+                return;
+            }
+
+
+            const profileUrl =
+                `https://veuqo.co.uk/c/${encodeURIComponent(cardId)}`;
+
+
+            const qrContainer =
+                $("qrcode");
+
+
+            qrContainer.innerHTML =
+                "";
+
+
+            new QRCode(
+                qrContainer,
+                {
+
+                    text:
+                        profileUrl,
+
+                    width:
+                        220,
+
+                    height:
+                        220,
+
+                    colorDark:
+                        "#000000",
+
+                    colorLight:
+                        "#ffffff",
+
+                    correctLevel:
+                        QRCode.CorrectLevel.H
+
+                }
+            );
+
+
+            $("profileUrl").innerText =
+                profileUrl;
+
+
+            $("result").style.display =
+                "block";
+
+
+            setStatus(
+                "status",
+                "QR generated successfully."
+            );
+        }
+
+
+        /*
+        ========================================
+        DOWNLOAD QR
+        ========================================
+        */
+
+        function downloadQR() {
+
+            const qrContainer =
+                $("qrcode");
+
+
+            const canvas =
+                qrContainer.querySelector(
+                    "canvas"
+                );
+
+
+            const image =
+                qrContainer.querySelector(
+                    "img"
+                );
+
+
+            let dataUrl =
+                "";
+
+
+            if (canvas) {
+
+                dataUrl =
+                    canvas.toDataURL(
+                        "image/png"
+                    );
+
+            } else if (image) {
+
+                dataUrl =
+                    image.src;
+
+            } else {
+
+                setStatus(
+                    "status",
+                    "Generate a QR code first."
+                );
+
+                return;
+            }
+
+
+            const cardId =
+                $("cardId").value.trim();
+
+
+            const link =
+                document.createElement(
+                    "a"
+                );
+
+
+            link.href =
+                dataUrl;
+
+
+            link.download =
+                `${cardId || "VEUQO"}-QR.png`;
+
+
+            document.body.appendChild(
+                link
+            );
+
+
+            link.click();
+
+
+            document.body.removeChild(
+                link
+            );
+        }
+
+
+        /*
+        ========================================
+        LOAD CUSTOMER
+        ========================================
+        */
+
+        async function loadCustomer() {
+
+            const cardId =
+                $("searchCardId")
+                    .value
+                    .trim();
+
+
+            $("profilePhoto").value =
+                "";
+
+
+            clearPreviewObjectUrl();
+
+
+            if (!cardId) {
+
+                setStatus(
+                    "manageStatus",
+                    "Enter a Card ID."
+                );
+
+                return;
+            }
+
+
+            setStatus(
+                "manageStatus",
+                "Loading customer..."
+            );
+
+
+            const {
+                data,
                 error
-            );
-        }
-    }
-
-    // Refresh the admin preview if a new photo was uploaded
-    if (profilePhotoUrl) {
-
-        const preview =
-            document.getElementById(
-                "profilePhotoPreview"
-            );
-
-        preview.src =
-            profilePhotoUrl;
-
-        preview.style.display =
-            "block";
-
-        document.getElementById(
-            "removePhotoButton"
-        ).style.display =
-            "block";
-
-        document.getElementById(
-            "profilePhoto"
-        ).value = "";
-    }
-
-    status.innerText =
-        "Changes saved successfully.";
-}
+            } =
+                await supabaseClient
+                    .from("Profiles")
+                    .select("*")
+                    .eq(
+                        "card_id",
+                        cardId
+                    )
+                    .single();
 
 
-async function logoutAdmin() {
+            if (
+                error ||
+                !data
+            ) {
 
-    await supabaseClient.auth.signOut();
-
-    document.getElementById("adminSection").style.display =
-        "none";
-
-    document.getElementById("loginSection").style.display =
-        "block";
-
-    document.getElementById("adminPassword").value =
-        "";
-
-    document.getElementById("loginStatus").innerText =
-        "Logged out successfully.";
-}
-
-document
-    .getElementById("logoutButton")
-    .addEventListener("click", logoutAdmin);
+                console.error(error);
 
 
-/* PROFILE PHOTO PREVIEW */
+                setStatus(
+                    "manageStatus",
+                    "Customer not found."
+                );
 
-const profilePhotoInput =
-    document.getElementById("profilePhoto");
 
-const profilePhotoPreview =
-    document.getElementById("profilePhotoPreview");
+                return;
+            }
 
-profilePhotoInput.addEventListener("change", function () {
 
-    const file = this.files[0];
+            $("fullName").value =
+                data.full_name || "";
 
-    if (!file) {
-        profilePhotoPreview.style.display = "none";
-        profilePhotoPreview.src = "";
-        return;
-    }
+            $("jobTitle").value =
+                data.job_title || "";
 
-    const previewURL = URL.createObjectURL(file);
+            $("company").value =
+                data.company || "";
 
-    profilePhotoPreview.src = previewURL;
-    profilePhotoPreview.style.display = "block";
-});
+            $("phone").value =
+                data.phone || "";
 
-async function removeProfilePhoto() {
+            $("email").value =
+                data.email || "";
 
-    const status =
-        document.getElementById("status");
+            $("website").value =
+                data.website || "";
 
-    const cardId =
-        document.getElementById("cardId").value.trim();
+            $("linkedin").value =
+                data.linkedin || "";
 
-    if (!cardId) {
-        status.innerText =
-            "Load a customer first.";
-        return;
-    }
+            $("instagram").value =
+                data.instagram || "";
 
-    status.innerText =
-        "Removing photo...";
+            $("facebook").value =
+                data.facebook || "";
 
-    // Get current photo URL
-    const { data: customer, error: fetchError } =
-        await supabaseClient
-            .from("Profiles")
-            .select("profile_photo")
-            .eq("card_id", cardId)
-            .single();
+            $("cardId").value =
+                data.card_id;
 
-    if (fetchError) {
 
-        console.error(
-            "CUSTOMER FETCH ERROR:",
-            fetchError
-        );
-
-        status.innerText =
-            "Unable to find customer photo.";
-
-        return;
-    }
-
-    const photoUrl =
-        customer?.profile_photo;
-
-    // Delete actual file from Supabase Storage
-    if (photoUrl) {
-
-        const filePath =
-            getStoragePathFromUrl(photoUrl);
-
-        console.log(
-            "Photo URL:",
-            photoUrl
-        );
-
-        console.log(
-            "Deleting Storage path:",
-            filePath
-        );
-
-        if (!filePath) {
-
-            status.innerText =
-                "Unable to identify photo file.";
-
-            return;
-        }
-
-        const { data: deletedFiles, error: storageError } =
-            await supabaseClient.storage
-                .from("profile-photos")
-                .remove([filePath]);
-
-        if (storageError) {
-
-            console.error(
-                "STORAGE DELETE ERROR:",
-                storageError
+            showProfilePhoto(
+                data.profile_photo || null
             );
 
-            status.innerText =
-                "Unable to delete photo from storage: " +
-                storageError.message;
 
-            return;
+            setStatus(
+                "manageStatus",
+                "Customer loaded successfully."
+            );
+
+
+            setStatus(
+                "status",
+                ""
+            );
         }
 
-        console.log(
-            "Deleted file:",
-            deletedFiles
-        );
-    }
 
-    // Remove URL from Profiles table
-    const { error: updateError } =
-        await supabaseClient
-            .from("Profiles")
-            .update({
-                profile_photo: null
-            })
-            .eq("card_id", cardId);
+        /*
+        ========================================
+        UPLOAD PROFILE PHOTO
+        ========================================
+        */
 
-    if (updateError) {
+        async function uploadProfilePhoto(
+            cardId
+        ) {
 
-        console.error(
-            "PROFILE UPDATE ERROR:",
-            updateError
-        );
+            const file =
+                $("profilePhoto").files[0];
 
-        status.innerText =
-            "Unable to remove photo: " +
-            updateError.message;
 
-        return;
-    }
+            if (!file) {
 
-    // Clear admin preview
-    const preview =
-        document.getElementById(
-            "profilePhotoPreview"
-        );
+                return null;
+            }
 
-    preview.src = "";
-    preview.style.display = "none";
 
-    document.getElementById(
-        "profilePhoto"
-    ).value = "";
+            const fileExtension =
+                file.name.includes(".")
 
-    document.getElementById(
-        "removePhotoButton"
-    ).style.display = "none";
+                    ? file.name
+                        .split(".")
+                        .pop()
+                        .toLowerCase()
 
-    status.innerText =
-        "Photo removed successfully.";
-}
-    
-checkAdminSession();
+                    : "jpg";
 
-</script>
+
+            const fileName =
+                `${cardId}-${Date.now()}.${fileExtension}`;
+
+
+            const filePath =
+                `customers/${fileName}`;
+
+
+            const {
+                error: uploadError
+            } =
+                await supabaseClient.storage
+                    .from(
+                        PROFILE_PHOTO_BUCKET
+                    )
+                    .upload(
+                        filePath,
+                        file,
+                        {
+                            cacheControl:
+                                "3600",
+
+                            upsert:
+                                false
+                        }
+                    );
+
+
+            if (uploadError) {
+
+                console.error(
+                    "PHOTO UPLOAD ERROR:",
+                    uploadError
+                );
+
+
+                throw uploadError;
+            }
+
+
+            const {
+                data: publicUrlData
+            } =
+                supabaseClient.storage
+                    .from(
+                        PROFILE_PHOTO_BUCKET
+                    )
+                    .getPublicUrl(
+                        filePath
+                    );
+
+
+            if (
+                !publicUrlData?.publicUrl
+            ) {
+
+                throw new Error(
+                    "Could not create photo URL."
+                );
+            }
+
+
+            return (
+                publicUrlData.publicUrl
+            );
+        }
+
+
+        /*
+        ========================================
+        BUILD CUSTOMER DATA
+        ========================================
+        */
+
+        function buildCustomerPayload() {
+
+            return {
+
+                full_name:
+                    fieldValue("fullName"),
+
+                job_title:
+                    fieldValue("jobTitle"),
+
+                company:
+                    fieldValue("company"),
+
+                phone:
+                    fieldValue("phone"),
+
+                email:
+                    fieldValue("email"),
+
+                website:
+                    fieldValue("website"),
+
+                linkedin:
+                    fieldValue("linkedin"),
+
+                instagram:
+                    fieldValue("instagram"),
+
+                facebook:
+                    fieldValue("facebook")
+
+            };
+        }
+
+
+        /*
+        ========================================
+        CREATE CUSTOMER
+        ========================================
+        */
+
+        async function createCustomer() {
+
+            const cardId =
+                $("cardId").value.trim();
+
+
+            const fullName =
+                $("fullName").value.trim();
+
+
+            if (!cardId) {
+
+                setStatus(
+                    "status",
+                    "Generate a Card ID first."
+                );
+
+                return;
+            }
+
+
+            if (!fullName) {
+
+                setStatus(
+                    "status",
+                    "Enter the customer's full name."
+                );
+
+                return;
+            }
+
+
+            let profilePhotoUrl =
+                null;
+
+
+            try {
+
+                setStatus(
+                    "status",
+                    "Uploading photo..."
+                );
+
+
+                profilePhotoUrl =
+                    await uploadProfilePhoto(
+                        cardId
+                    );
+
+
+            } catch (error) {
+
+                setStatus(
+                    "status",
+                    `Photo upload failed: ${error.message}`
+                );
+
+
+                return;
+            }
+
+
+            setStatus(
+                "status",
+                "Creating customer..."
+            );
+
+
+            const customer = {
+
+                card_id:
+                    cardId,
+
+                ...buildCustomerPayload(),
+
+                profile_photo:
+                    profilePhotoUrl,
+
+                status:
+                    "active"
+
+            };
+
+
+            const {
+                error
+            } =
+                await supabaseClient
+                    .from("Profiles")
+                    .insert(
+                        customer
+                    );
+
+
+            if (error) {
+
+                console.error(error);
+
+
+                /*
+                If the photo uploaded but
+                customer creation failed,
+                remove the orphan file.
+                */
+
+                if (profilePhotoUrl) {
+
+                    await deleteStoragePhoto(
+                        profilePhotoUrl
+                    );
+                }
+
+
+                if (
+                    error.code ===
+                    "23505"
+                ) {
+
+                    setStatus(
+                        "status",
+                        "That Card ID already exists. Generate another."
+                    );
+
+                } else {
+
+                    setStatus(
+                        "status",
+                        `Unable to create customer: ${error.message}`
+                    );
+                }
+
+
+                return;
+            }
+
+
+            $("profilePhoto").value =
+                "";
+
+
+            showProfilePhoto(
+                profilePhotoUrl
+            );
+
+
+            setStatus(
+                "status",
+                "Customer created successfully."
+            );
+
+
+            generateQR();
+        }
+
+
+        /*
+        ========================================
+        SAVE CHANGES
+        ========================================
+        */
+
+        async function saveChanges() {
+
+            const cardId =
+                $("cardId").value.trim();
+
+
+            if (!cardId) {
+
+                setStatus(
+                    "status",
+                    "Load a customer first."
+                );
+
+                return;
+            }
+
+
+            setStatus(
+                "status",
+                "Saving changes..."
+            );
+
+
+            /*
+            Get existing photo URL before
+            uploading a replacement.
+            */
+
+            const {
+                data: existingCustomer,
+                error: fetchError
+            } =
+                await supabaseClient
+                    .from("Profiles")
+                    .select(
+                        "profile_photo"
+                    )
+                    .eq(
+                        "card_id",
+                        cardId
+                    )
+                    .single();
+
+
+            if (
+                fetchError ||
+                !existingCustomer
+            ) {
+
+                console.error(
+                    fetchError
+                );
+
+
+                setStatus(
+                    "status",
+                    "Unable to load existing customer."
+                );
+
+
+                return;
+            }
+
+
+            const oldPhotoUrl =
+                existingCustomer
+                    .profile_photo ||
+                null;
+
+
+            let newPhotoUrl =
+                null;
+
+
+            /*
+            Upload replacement if
+            one was selected.
+            */
+
+            try {
+
+                newPhotoUrl =
+                    await uploadProfilePhoto(
+                        cardId
+                    );
+
+
+            } catch (error) {
+
+                setStatus(
+                    "status",
+                    `Photo upload failed: ${error.message}`
+                );
+
+
+                return;
+            }
+
+
+            const updates =
+                buildCustomerPayload();
+
+
+            /*
+            Keep existing photo unless
+            a new photo was selected.
+            */
+
+            if (newPhotoUrl) {
+
+                updates.profile_photo =
+                    newPhotoUrl;
+            }
+
+
+            const {
+                error: updateError
+            } =
+                await supabaseClient
+                    .from("Profiles")
+                    .update(
+                        updates
+                    )
+                    .eq(
+                        "card_id",
+                        cardId
+                    );
+
+
+            /*
+            If DB update fails after the
+            new photo uploaded, delete
+            the new orphan file.
+            */
+
+            if (updateError) {
+
+                console.error(
+                    updateError
+                );
+
+
+                if (newPhotoUrl) {
+
+                    await deleteStoragePhoto(
+                        newPhotoUrl
+                    );
+                }
+
+
+                setStatus(
+                    "status",
+                    `Unable to save changes: ${updateError.message}`
+                );
+
+
+                return;
+            }
+
+
+            let cleanupFailed =
+                false;
+
+
+            /*
+            Database now points to the new photo.
+
+            Delete the old photo from Storage.
+            */
+
+            if (
+                newPhotoUrl &&
+                oldPhotoUrl &&
+                oldPhotoUrl !==
+                    newPhotoUrl
+            ) {
+
+                const cleanup =
+                    await deleteStoragePhoto(
+                        oldPhotoUrl
+                    );
+
+
+                cleanupFailed =
+                    !cleanup.success;
+            }
+
+
+            if (newPhotoUrl) {
+
+                $("profilePhoto").value =
+                    "";
+
+
+                showProfilePhoto(
+                    newPhotoUrl
+                );
+            }
+
+
+            setStatus(
+
+                "status",
+
+                cleanupFailed
+
+                    ? "Changes saved, but the old photo could not be deleted from Storage."
+
+                    : "Changes saved successfully."
+
+            );
+        }
+
+
+        /*
+        ========================================
+        REMOVE PROFILE PHOTO
+        ========================================
+        */
+
+        async function removeProfilePhoto() {
+
+            const cardId =
+                $("cardId").value.trim();
+
+
+            if (!cardId) {
+
+                setStatus(
+                    "status",
+                    "Load a customer first."
+                );
+
+                return;
+            }
+
+
+            setStatus(
+                "status",
+                "Removing photo..."
+            );
+
+
+            /*
+            Get the current photo URL.
+            */
+
+            const {
+                data: customer,
+                error: fetchError
+            } =
+                await supabaseClient
+                    .from("Profiles")
+                    .select(
+                        "profile_photo"
+                    )
+                    .eq(
+                        "card_id",
+                        cardId
+                    )
+                    .single();
+
+
+            if (
+                fetchError ||
+                !customer
+            ) {
+
+                console.error(
+                    fetchError
+                );
+
+
+                setStatus(
+                    "status",
+                    "Unable to find customer photo."
+                );
+
+
+                return;
+            }
+
+
+            const photoUrl =
+                customer
+                    .profile_photo ||
+                null;
+
+
+            /*
+            First remove the photo URL
+            from the customer record.
+            */
+
+            const {
+                error: updateError
+            } =
+                await supabaseClient
+                    .from("Profiles")
+                    .update({
+                        profile_photo:
+                            null
+                    })
+                    .eq(
+                        "card_id",
+                        cardId
+                    );
+
+
+            if (updateError) {
+
+                console.error(
+                    "PROFILE UPDATE ERROR:",
+                    updateError
+                );
+
+
+                setStatus(
+                    "status",
+                    `Unable to remove photo: ${updateError.message}`
+                );
+
+
+                return;
+            }
+
+
+            /*
+            Then delete the actual
+            Storage file.
+            */
+
+            let cleanupFailed =
+                false;
+
+
+            if (photoUrl) {
+
+                const cleanup =
+                    await deleteStoragePhoto(
+                        photoUrl
+                    );
+
+
+                cleanupFailed =
+                    !cleanup.success;
+            }
+
+
+            $("profilePhoto").value =
+                "";
+
+
+            showProfilePhoto(
+                null
+            );
+
+
+            setStatus(
+
+                "status",
+
+                cleanupFailed
+
+                    ? "Photo removed from the profile, but the Storage file could not be deleted."
+
+                    : "Photo removed successfully."
+
+            );
+        }
+
+
+        /*
+        ========================================
+        LOG OUT
+        ========================================
+        */
+
+        async function logoutAdmin() {
+
+            await supabaseClient.auth
+                .signOut();
+
+
+            $("adminSection").style.display =
+                "none";
+
+
+            $("loginSection").style.display =
+                "block";
+
+
+            $("adminPassword").value =
+                "";
+
+
+            setStatus(
+                "loginStatus",
+                "Logged out successfully."
+            );
+        }
+
+
+        /*
+        ========================================
+        PHOTO PREVIEW
+        ========================================
+        */
+
+        $("profilePhoto")
+            .addEventListener(
+                "change",
+                function () {
+
+                    const file =
+                        this.files[0];
+
+
+                    if (!file) {
+                        return;
+                    }
+
+
+                    showLocalPhotoPreview(
+                        file
+                    );
+                }
+            );
+
+
+        /*
+        ========================================
+        BUTTON EVENTS
+        ========================================
+        */
+
+        $("loginButton")
+            .addEventListener(
+                "click",
+                loginAdmin
+            );
+
+
+        $("loadCustomerButton")
+            .addEventListener(
+                "click",
+                loadCustomer
+            );
+
+
+        $("generateIdButton")
+            .addEventListener(
+                "click",
+                createCardId
+            );
+
+
+        $("createCustomerButton")
+            .addEventListener(
+                "click",
+                createCustomer
+            );
+
+
+        $("saveChangesButton")
+            .addEventListener(
+                "click",
+                saveChanges
+            );
+
+
+        $("removePhotoButton")
+            .addEventListener(
+                "click",
+                removeProfilePhoto
+            );
+
+
+        $("generateButton")
+            .addEventListener(
+                "click",
+                generateQR
+            );
+
+
+        $("downloadQrButton")
+            .addEventListener(
+                "click",
+                downloadQR
+            );
+
+
+        $("logoutButton")
+            .addEventListener(
+                "click",
+                logoutAdmin
+            );
+
+
+        /*
+        Allow Enter to log in.
+        */
+
+        $("adminPassword")
+            .addEventListener(
+                "keydown",
+                (event) => {
+
+                    if (
+                        event.key ===
+                        "Enter"
+                    ) {
+
+                        loginAdmin();
+                    }
+                }
+            );
+
+
+        /*
+        Check whether an admin
+        is already logged in.
+        */
+
+        checkAdminSession();
+
+    </script>
 
 </body>
-
 </html>
