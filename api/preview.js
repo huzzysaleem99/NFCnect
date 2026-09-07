@@ -168,18 +168,8 @@ if (profilePhoto) {
 
  } catch (photoError) {
   console.error("Profile photo error:", photoError);
-
-  return res.status(500).json({
-    error: "Profile photo failed",
-    message: photoError.message,
-    photoUrl: profilePhoto
-  });
-}
-  
-} else {
   drawInitial(ctx, name);
 }
-
     // Name
     ctx.textAlign = "left";
     ctx.fillStyle = "#FFFFFF";
