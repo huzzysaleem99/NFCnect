@@ -90,7 +90,7 @@ export default async function handler(req, res) {
           x="90"
           y="120"
           fill="#D6B777"
-          font-family="sans-serif"
+          font-family="DejaVu Sans"
           font-size="34"
           font-weight="700"
           letter-spacing="7"
@@ -101,7 +101,7 @@ export default async function handler(req, res) {
           y="115"
           text-anchor="end"
           fill="#888888"
-          font-family="sans-serif"
+          font-family="DejaVu Sans"
           font-size="18"
           letter-spacing="2"
         >DIGITAL BUSINESS CARD</text>
@@ -121,7 +121,7 @@ export default async function handler(req, res) {
           y="340"
           text-anchor="middle"
           fill="#D6B777"
-          font-family="sans-serif"
+          font-family="DejaVu Sans"
           font-size="72"
           font-weight="600"
         >${name.charAt(0).toUpperCase()}</text>
@@ -131,7 +131,7 @@ export default async function handler(req, res) {
           x="330"
           y="285"
           fill="#FFFFFF"
-          font-family="sans-serif"
+          font-family="DejaVu Sans"
           font-size="58"
           font-weight="700"
         >${name}</text>
@@ -143,7 +143,7 @@ export default async function handler(req, res) {
           x="330"
           y="340"
           fill="#D6B777"
-          font-family="sans-serif"
+          font-family="DejaVu Sans"
           font-size="30"
         >${jobTitle}</text>
         `
@@ -157,7 +157,7 @@ export default async function handler(req, res) {
           x="330"
           y="385"
           fill="#AAAAAA"
-          font-family="sans-serif"
+          font-family="DejaVu Sans"
           font-size="27"
         >${company}</text>
         `
@@ -169,7 +169,7 @@ export default async function handler(req, res) {
           x="90"
           y="535"
           fill="#888888"
-          font-family="sans-serif"
+          font-family="DejaVu Sans"
           font-size="20"
           letter-spacing="3"
         >TAP  •  CONNECT  •  SHARE</text>
@@ -179,7 +179,7 @@ export default async function handler(req, res) {
           y="535"
           text-anchor="end"
           fill="#D6B777"
-          font-family="sans-serif"
+          font-family="DejaVu Sans"
           font-size="22"
         >veuqo.co.uk</text>
 
