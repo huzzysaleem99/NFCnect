@@ -506,6 +506,16 @@ async function loadProfile() {
         const person = profiles[0];
         currentPerson = person;
 
+        const profilePhoto =
+    document.getElementById("profilePhoto");
+
+if (person.profile_photo) {
+    profilePhoto.src = person.profile_photo;
+    profilePhoto.style.display = "block";
+} else {
+    profilePhoto.style.display = "none";
+}
+
 
         /* PROFILE DETAILS */
 
