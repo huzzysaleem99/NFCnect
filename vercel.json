@@ -3,6 +3,10 @@
     {
       "source": "/c/:cardId",
       "destination": "/api/card?cardId=:cardId"
+    },
+    {
+      "source": "/preview/:cardId.png",
+      "destination": "/api/preview?cardId=:cardId"
     }
   ]
 }
