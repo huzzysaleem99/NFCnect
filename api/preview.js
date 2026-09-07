@@ -33,7 +33,7 @@ export default async function handler(req, res) {
       `${SUPABASE_URL}/rest/v1/Profiles` +
       `?card_id=eq.${encodeURIComponent(cardId)}` +
       `&status=eq.active` +
-      `&select=full_name,job_title,company`;
+      &select=full_name,job_title,company,profile_photo
 
     const response = await fetch(profileUrl, {
       headers: {
