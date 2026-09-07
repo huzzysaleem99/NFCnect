@@ -1043,7 +1043,7 @@ document
     .addEventListener("click", createCustomer);
 
     
-    async function saveCustomerChanges() {
+async function saveChanges() {
 
     const status =
         document.getElementById("status");
@@ -1060,73 +1060,167 @@ document
     status.innerText =
         "Saving changes...";
 
-        let profilePhotoUrl = null;
+    // Get the customer's current photo before making changes
+    const { data: existingCustomer, error: fetchError } =
+        await supabaseClient
+            .from("Profiles")
+            .select("profile_photo")
+            .eq("card_id", cardId)
+            .single();
 
-try {
-    profilePhotoUrl =
-        await uploadProfilePhoto(cardId);
-} catch (error) {
-    status.innerText =
-        "Photo upload failed: " + error.message;
-    return;
-}
+    if (fetchError) {
+        console.error(fetchError);
+
+        status.innerText =
+            "Unable to load existing customer.";
+
+        return;
+    }
+
+    const oldPhotoUrl =
+        existingCustomer?.profile_photo || null;
+
+    // Upload a newly selected photo, if there is one
+    let profilePhotoUrl = null;
+
+    try {
+        profilePhotoUrl =
+            await uploadProfilePhoto(cardId);
+    } catch (error) {
+
+        status.innerText =
+            "Photo upload failed: " +
+            error.message;
+
+        return;
+    }
 
     const updates = {
+
         full_name:
             document.getElementById("fullName").value.trim(),
 
         job_title:
-            document.getElementById("jobTitle").value.trim() || null,
+            document.getElementById("jobTitle").value.trim(),
 
         company:
-            document.getElementById("company").value.trim() || null,
+            document.getElementById("company").value.trim(),
 
         phone:
-            document.getElementById("phone").value.trim() || null,
+            document.getElementById("phone").value.trim(),
 
         email:
-            document.getElementById("email").value.trim() || null,
+            document.getElementById("email").value.trim(),
 
         website:
-            document.getElementById("website").value.trim() || null,
+            document.getElementById("website").value.trim(),
 
         linkedin:
-            document.getElementById("linkedin").value.trim() || null,
+            document.getElementById("linkedin").value.trim(),
 
         instagram:
-            document.getElementById("instagram").value.trim() || null,
+            document.getElementById("instagram").value.trim(),
 
         facebook:
-            document.getElementById("facebook").value.trim() || null
+            document.getElementById("facebook").value.trim()
     };
 
-        if (profilePhotoUrl) {
-    updates.profile_photo =
-        profilePhotoUrl;
-}
+    // Only replace profile_photo if a new file was selected
+    if (profilePhotoUrl) {
+        updates.profile_photo =
+            profilePhotoUrl;
+    }
 
-    const { error } =
+    const { error: updateError } =
         await supabaseClient
             .from("Profiles")
             .update(updates)
             .eq("card_id", cardId);
 
-    if (error) {
-        console.error(error);
+    if (updateError) {
+
+        console.error(updateError);
 
         status.innerText =
-            "Unable to save changes: " + error.message;
+            "Unable to save changes: " +
+            updateError.message;
 
         return;
+    }
+
+    // If a new photo replaced an old one,
+    // delete the old Storage file
+    if (
+        profilePhotoUrl &&
+        oldPhotoUrl &&
+        oldPhotoUrl !== profilePhotoUrl
+    ) {
+
+        try {
+
+            const marker =
+                "/profile-photos/";
+
+            const markerPosition =
+                oldPhotoUrl.indexOf(marker);
+
+            if (markerPosition !== -1) {
+
+                const oldFilePath =
+                    decodeURIComponent(
+                        oldPhotoUrl.substring(
+                            markerPosition + marker.length
+                        )
+                    );
+
+                const { error: deleteError } =
+                    await supabaseClient.storage
+                        .from("profile-photos")
+                        .remove([oldFilePath]);
+
+                if (deleteError) {
+                    console.error(
+                        "OLD PHOTO DELETE ERROR:",
+                        deleteError
+                    );
+                }
+            }
+
+        } catch (error) {
+            console.error(
+                "Unable to delete old photo:",
+                error
+            );
+        }
+    }
+
+    // Refresh the admin preview if a new photo was uploaded
+    if (profilePhotoUrl) {
+
+        const preview =
+            document.getElementById(
+                "profilePhotoPreview"
+            );
+
+        preview.src =
+            profilePhotoUrl;
+
+        preview.style.display =
+            "block";
+
+        document.getElementById(
+            "removePhotoButton"
+        ).style.display =
+            "block";
+
+        document.getElementById(
+            "profilePhoto"
+        ).value = "";
     }
 
     status.innerText =
         "Changes saved successfully.";
 }
-
-document
-    .getElementById("saveChangesButton")
-    .addEventListener("click", saveCustomerChanges);
 
 
 async function logoutAdmin() {
