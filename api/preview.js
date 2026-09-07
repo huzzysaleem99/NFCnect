@@ -1,22 +1,26 @@
-import sharp from "sharp";
+import {
+  createCanvas,
+  GlobalFonts
+} from "@napi-rs/canvas";
 
-const SUPABASE_URL = "https://qldzzuqdzoarboonnizn.supabase.co";
+import path from "node:path";
+
+const SUPABASE_URL =
+  "https://qldzzuqdzoarboonnizn.supabase.co";
 
 const SUPABASE_KEY =
   "sb_publishable_MOUxn_K0T9DpYe0ZZyk-TA_cMjATkVd";
 
-function escapeXml(value = "") {
-  return String(value)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&apos;");
-}
+const fontPath = path.join(
+  process.cwd(),
+  "fonts",
+  "Inter_18pt-Regular.ttf"
+);
+
+GlobalFonts.registerFromPath(fontPath, "Inter");
 
 export default async function handler(req, res) {
   try {
-    // 1. Get Card ID from the URL
     const cardId = req.query.cardId;
 
     if (!cardId) {
@@ -25,7 +29,6 @@ export default async function handler(req, res) {
       });
     }
 
-    // 2. Fetch customer from Supabase
     const profileUrl =
       `${SUPABASE_URL}/rest/v1/Profiles` +
       `?card_id=eq.${encodeURIComponent(cardId)}` +
@@ -47,7 +50,7 @@ export default async function handler(req, res) {
 
     const profiles = await response.json();
 
-    if (!profiles || profiles.length === 0) {
+    if (!profiles.length) {
       return res.status(404).json({
         error: "Profile not found"
       });
@@ -55,145 +58,104 @@ export default async function handler(req, res) {
 
     const profile = profiles[0];
 
-    const name = escapeXml(profile.full_name || "VEUQO");
-    const jobTitle = escapeXml(profile.job_title || "");
-    const company = escapeXml(profile.company || "");
+    const name = profile.full_name || "VEUQO";
+    const jobTitle = profile.job_title || "";
+    const company = profile.company || "";
 
-    // 3. Generate VEUQO preview
-    const svg = `
-      <svg
-        width="1200"
-        height="630"
-        viewBox="0 0 1200 630"
-        xmlns="http://www.w3.org/2000/svg"
-      >
+    const canvas = createCanvas(1200, 630);
+    const ctx = canvas.getContext("2d");
 
-        <rect
-          width="1200"
-          height="630"
-          fill="#080808"
-        />
+    // Background
+    ctx.fillStyle = "#080808";
+    ctx.fillRect(0, 0, 1200, 630);
 
-        <rect
-          x="45"
-          y="45"
-          width="1110"
-          height="540"
-          rx="38"
-          fill="#111111"
-          stroke="#D6B777"
-          stroke-width="3"
-        />
+    // Card
+    ctx.fillStyle = "#111111";
+    ctx.strokeStyle = "#D6B777";
+    ctx.lineWidth = 3;
 
-        <!-- VEUQO branding -->
-        <text
-          x="90"
-          y="120"
-          fill="#D6B777"
-          font-family="DejaVu Sans"
-          font-size="34"
-          font-weight="700"
-          letter-spacing="7"
-        >VEUQO</text>
+    ctx.beginPath();
+    ctx.roundRect(45, 45, 1110, 540, 38);
+    ctx.fill();
+    ctx.stroke();
 
-        <text
-          x="1110"
-          y="115"
-          text-anchor="end"
-          fill="#888888"
-          font-family="DejaVu Sans"
-          font-size="18"
-          letter-spacing="2"
-        >DIGITAL BUSINESS CARD</text>
+    // VEUQO
+    ctx.fillStyle = "#D6B777";
+    ctx.font = "34px Inter";
+    ctx.fillText("VEUQO", 90, 120);
 
-        <!-- Initial circle -->
-        <circle
-          cx="190"
-          cy="315"
-          r="90"
-          fill="#080808"
-          stroke="#D6B777"
-          stroke-width="3"
-        />
+    // Top-right text
+    ctx.fillStyle = "#888888";
+    ctx.font = "18px Inter";
+    ctx.textAlign = "right";
+    ctx.fillText(
+      "DIGITAL BUSINESS CARD",
+      1110,
+      115
+    );
 
-        <text
-          x="190"
-          y="340"
-          text-anchor="middle"
-          fill="#D6B777"
-          font-family="DejaVu Sans"
-          font-size="72"
-          font-weight="600"
-        >${name.charAt(0).toUpperCase()}</text>
+    // Initial circle
+    ctx.beginPath();
+    ctx.arc(190, 315, 90, 0, Math.PI * 2);
 
-        <!-- Customer -->
-        <text
-          x="330"
-          y="285"
-          fill="#FFFFFF"
-          font-family="DejaVu Sans"
-          font-size="58"
-          font-weight="700"
-        >${name}</text>
+    ctx.fillStyle = "#080808";
+    ctx.fill();
 
-        ${
-          jobTitle
-            ? `
-        <text
-          x="330"
-          y="340"
-          fill="#D6B777"
-          font-family="DejaVu Sans"
-          font-size="30"
-        >${jobTitle}</text>
-        `
-            : ""
-        }
+    ctx.strokeStyle = "#D6B777";
+    ctx.lineWidth = 3;
+    ctx.stroke();
 
-        ${
-          company
-            ? `
-        <text
-          x="330"
-          y="385"
-          fill="#AAAAAA"
-          font-family="DejaVu Sans"
-          font-size="27"
-        >${company}</text>
-        `
-            : ""
-        }
+    // Initial
+    ctx.fillStyle = "#D6B777";
+    ctx.font = "64px Inter";
+    ctx.textAlign = "center";
+    ctx.fillText(
+      name.charAt(0).toUpperCase(),
+      190,
+      338
+    );
 
-        <!-- Footer -->
-        <text
-          x="90"
-          y="535"
-          fill="#888888"
-          font-family="DejaVu Sans"
-          font-size="20"
-          letter-spacing="3"
-        >TAP  •  CONNECT  •  SHARE</text>
+    // Name
+    ctx.textAlign = "left";
+    ctx.fillStyle = "#FFFFFF";
+    ctx.font = "52px Inter";
+    ctx.fillText(name, 330, 285);
 
-        <text
-          x="1110"
-          y="535"
-          text-anchor="end"
-          fill="#D6B777"
-          font-family="DejaVu Sans"
-          font-size="22"
-        >veuqo.co.uk</text>
+    // Job title
+    if (jobTitle) {
+      ctx.fillStyle = "#D6B777";
+      ctx.font = "30px Inter";
+      ctx.fillText(jobTitle, 330, 340);
+    }
 
-      </svg>
-    `;
+    // Company
+    if (company) {
+      ctx.fillStyle = "#AAAAAA";
+      ctx.font = "27px Inter";
+      ctx.fillText(company, 330, 385);
+    }
 
-    // 4. Convert SVG to PNG
-    const image = await sharp(Buffer.from(svg))
-      .png()
-      .toBuffer();
+    // Footer
+    ctx.fillStyle = "#888888";
+    ctx.font = "20px Inter";
+    ctx.fillText(
+      "TAP • CONNECT • SHARE",
+      90,
+      535
+    );
+
+    ctx.textAlign = "right";
+    ctx.fillStyle = "#D6B777";
+    ctx.font = "22px Inter";
+    ctx.fillText(
+      "veuqo.co.uk",
+      1110,
+      535
+    );
+
+    const image = await canvas.encode("png");
 
     res.setHeader("Content-Type", "image/png");
-
-    // Don't heavily cache it yet while we're testing
     res.setHeader(
       "Cache-Control",
       "public, max-age=0, s-maxage=60"
@@ -205,7 +167,8 @@ export default async function handler(req, res) {
     console.error("VEUQO preview error:", error);
 
     return res.status(500).json({
-      error: "Preview generation failed"
+      error: "Preview generation failed",
+      message: error.message
     });
   }
 }
