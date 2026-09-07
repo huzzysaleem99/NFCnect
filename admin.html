@@ -1174,6 +1174,60 @@ profilePhotoInput.addEventListener("change", function () {
     profilePhotoPreview.src = previewURL;
     profilePhotoPreview.style.display = "block";
 });
+
+    async function removeProfilePhoto() {
+
+    const status =
+        document.getElementById("status");
+
+    const cardId =
+        document.getElementById("cardId").value.trim();
+
+    if (!cardId) {
+        status.innerText =
+            "Load a customer first.";
+        return;
+    }
+
+    status.innerText =
+        "Removing photo...";
+
+    const { error } =
+        await supabaseClient
+            .from("Profiles")
+            .update({
+                profile_photo: null
+            })
+            .eq("card_id", cardId);
+
+    if (error) {
+        console.error(error);
+
+        status.innerText =
+            "Unable to remove photo: " + error.message;
+
+        return;
+    }
+
+    document.getElementById("profilePhotoPreview").src =
+        "";
+
+    document.getElementById("profilePhotoPreview").style.display =
+        "none";
+
+    document.getElementById("profilePhoto").value =
+        "";
+
+    document.getElementById("removePhotoButton").style.display =
+        "none";
+
+    status.innerText =
+        "Photo removed successfully.";
+}
+
+document
+    .getElementById("removePhotoButton")
+    .addEventListener("click", removeProfilePhoto);
     
 checkAdminSession();
 
