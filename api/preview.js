@@ -53,10 +53,10 @@ export default async function handler(req, res) {
     }
 
     const profileUrl =
-  `${SUPABASE_URL}/rest/v1/Profiles` +
-  `?card_id=eq.${encodeURIComponent(cardId)}` +
-  `&status=eq.active` +
-  `&select=full_name,job_title,company,profile_photo`;
+      `${SUPABASE_URL}/rest/v1/Profiles` +
+      `?card_id=eq.${encodeURIComponent(cardId)}` +
+      `&status=eq.active` +
+      `&select=full_name,job_title,company,profile_photo`;
 
     const response = await fetch(profileUrl, {
       headers: {
@@ -93,7 +93,7 @@ export default async function handler(req, res) {
     ctx.fillStyle = "#080808";
     ctx.fillRect(0, 0, 1200, 630);
 
-    // Card
+    // Main card
     ctx.fillStyle = "#111111";
     ctx.strokeStyle = "#D6B777";
     ctx.lineWidth = 3;
@@ -103,123 +103,184 @@ export default async function handler(req, res) {
     ctx.fill();
     ctx.stroke();
 
-    // VEUQO
+    // VEUQO logo text
     ctx.fillStyle = "#D6B777";
     ctx.font = "34px Inter";
+    ctx.textAlign = "left";
     ctx.fillText("VEUQO", 90, 120);
 
-    // Top-right text
+    // Top-right label
     ctx.fillStyle = "#888888";
     ctx.font = "18px Inter";
     ctx.textAlign = "right";
+
     ctx.fillText(
       "DIGITAL BUSINESS CARD",
       1110,
       115
     );
 
-    // Profile photo / initial
-if (profilePhoto) {
-  try {
-    const photoResponse = await fetch(profilePhoto);
+    // Profile photo or initial
+    if (profilePhoto) {
+      try {
+        const photoResponse = await fetch(profilePhoto);
 
-    if (!photoResponse.ok) {
-      throw new Error("Could not download profile photo");
+        if (!photoResponse.ok) {
+          throw new Error(
+            "Could not download profile photo"
+          );
+        }
+
+        const photoBuffer = Buffer.from(
+          await photoResponse.arrayBuffer()
+        );
+
+        const photo = await loadImage(
+          new Uint8Array(photoBuffer)
+        );
+
+        ctx.save();
+
+        ctx.beginPath();
+        ctx.arc(
+          190,
+          315,
+          90,
+          0,
+          Math.PI * 2
+        );
+
+        ctx.clip();
+
+        const size = Math.min(
+          photo.width,
+          photo.height
+        );
+
+        const sourceX =
+          (photo.width - size) / 2;
+
+        const sourceY =
+          (photo.height - size) / 2;
+
+        ctx.drawImage(
+          photo,
+          sourceX,
+          sourceY,
+          size,
+          size,
+          100,
+          225,
+          180,
+          180
+        );
+
+        ctx.restore();
+
+        // Gold border around photo
+        ctx.beginPath();
+        ctx.arc(
+          190,
+          315,
+          90,
+          0,
+          Math.PI * 2
+        );
+
+        ctx.strokeStyle = "#D6B777";
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+      } catch (photoError) {
+        console.error(
+          "Profile photo error:",
+          photoError
+        );
+
+        drawInitial(ctx, name);
+      }
+
+    } else {
+      drawInitial(ctx, name);
     }
 
-    const photoBuffer = Buffer.from(
-      await photoResponse.arrayBuffer()
-    );
-
-    const photo = await loadImage(new Uint8Array(photoBuffer));
-
-    // Circular crop
-    ctx.save();
-
-    ctx.beginPath();
-    ctx.arc(190, 315, 90, 0, Math.PI * 2);
-    ctx.clip();
-
-    // Crop photo to fill circle
-    const size = Math.min(photo.width, photo.height);
-    const sourceX = (photo.width - size) / 2;
-    const sourceY = (photo.height - size) / 2;
-
-    ctx.drawImage(
-      photo,
-      sourceX,
-      sourceY,
-      size,
-      size,
-      100,
-      225,
-      180,
-      180
-    );
-
-    ctx.restore();
-
-    // Gold border
-    ctx.beginPath();
-    ctx.arc(190, 315, 90, 0, Math.PI * 2);
-    ctx.strokeStyle = "#D6B777";
-    ctx.lineWidth = 3;
-    ctx.stroke();
-
- } catch (photoError) {
-  console.error("Profile photo error:", photoError);
-  drawInitial(ctx, name);
-}
     // Name
     ctx.textAlign = "left";
     ctx.fillStyle = "#FFFFFF";
     ctx.font = "52px Inter";
-    ctx.fillText(name, 330, 285);
+
+    ctx.fillText(
+      name,
+      330,
+      285
+    );
 
     // Job title
     if (jobTitle) {
       ctx.fillStyle = "#D6B777";
       ctx.font = "30px Inter";
-      ctx.fillText(jobTitle, 330, 340);
+
+      ctx.fillText(
+        jobTitle,
+        330,
+        340
+      );
     }
 
     // Company
     if (company) {
       ctx.fillStyle = "#AAAAAA";
       ctx.font = "27px Inter";
-      ctx.fillText(company, 330, 385);
+
+      ctx.fillText(
+        company,
+        330,
+        385
+      );
     }
 
-    // Footer
+    // Footer left
     ctx.fillStyle = "#888888";
     ctx.font = "20px Inter";
+    ctx.textAlign = "left";
+
     ctx.fillText(
       "TAP • CONNECT • SHARE",
       90,
       535
     );
 
+    // Footer right
     ctx.textAlign = "right";
     ctx.fillStyle = "#D6B777";
     ctx.font = "22px Inter";
+
     ctx.fillText(
       "veuqo.co.uk",
       1110,
       535
     );
 
-   const image = await canvas.encode("png");
+    // Generate PNG
+    const image = await canvas.encode("png");
 
-res.setHeader("Content-Type", "image/png");
-res.setHeader(
-  "Cache-Control",
-  "public, max-age=0, s-maxage=60"
-);
+    res.setHeader(
+      "Content-Type",
+      "image/png"
+    );
 
-return res.status(200).send(image);
+    res.setHeader(
+      "Cache-Control",
+      "public, max-age=0, s-maxage=60"
+    );
+
+    return res.status(200).send(image);
 
   } catch (error) {
-    console.error("VEUQO preview error:", error);
+    console.error(
+      "VEUQO preview error:",
+      error
+    );
 
     return res.status(500).json({
       error: "Preview generation failed",
