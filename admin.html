@@ -887,7 +887,7 @@ document
 }
     
 
-    async function createCustomer() {
+   async function createCustomer() {
 
     const status =
         document.getElementById("status");
@@ -911,11 +911,26 @@ document
     }
 
     status.innerText =
+        "Uploading photo...";
+
+    let profilePhotoUrl = null;
+
+    try {
+        profilePhotoUrl =
+            await uploadProfilePhoto(cardId);
+    } catch (error) {
+        status.innerText =
+            "Photo upload failed: " + error.message;
+        return;
+    }
+
+    status.innerText =
         "Creating customer...";
 
     const customer = {
         card_id: cardId,
         full_name: fullName,
+
         job_title:
             document.getElementById("jobTitle").value.trim() || null,
 
@@ -940,7 +955,11 @@ document
         facebook:
             document.getElementById("facebook").value.trim() || null,
 
-        status: "active"
+        profile_photo:
+            profilePhotoUrl,
+
+        status:
+            "active"
     };
 
     const { error } =
@@ -974,6 +993,7 @@ document
     .getElementById("createCustomerButton")
     .addEventListener("click", createCustomer);
 
+    
     async function saveCustomerChanges() {
 
     const status =
