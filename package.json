@@ -1,5 +1,5 @@
 {
   "dependencies": {
-    "sharp": "latest"
+    "@napi-rs/canvas": "latest"
   }
 }
