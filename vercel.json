@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/c/:cardId",
-      "destination": "/index.html"
+      "destination": "/api/card?cardId=:cardId"
     }
   ]
 }
