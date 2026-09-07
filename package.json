@@ -1,5 +1,5 @@
 {
   "dependencies": {
-    "@napi-rs/canvas": "latest"
+    "@napi-rs/canvas": "0.1.100"
   }
 }
