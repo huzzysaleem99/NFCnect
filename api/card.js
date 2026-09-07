@@ -99,13 +99,6 @@ export default async function handler(req, res) {
     html = html.replace(
   "</body>",
   `
-  <script>
-    history.replaceState(
-      {},
-      "",
-      "/c/${encodeURIComponent(cardId)}"
-    );
-  </script>
   </body>
   `
 );
