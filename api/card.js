@@ -56,7 +56,7 @@ export default async function handler(req, res) {
       `https://veuqo.co.uk/c/${encodeURIComponent(cardId)}`;
 
     const previewUrl =
-      `https://veuqo.co.uk/api/preview?cardId=${encodeURIComponent(cardId)}`;
+  `https://veuqo.co.uk/preview/${encodeURIComponent(cardId)}.png`;
 
     // Load your existing digital profile HTML
     const htmlResponse = await fetch(
