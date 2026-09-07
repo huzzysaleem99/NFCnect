@@ -211,10 +211,9 @@ if (profilePhoto) {
    const image = await canvas.encode("png");
 
 res.setHeader("Content-Type", "image/png");
-res.setHeader("Content-Length", image.length);
 res.setHeader(
   "Cache-Control",
-  "public, max-age=3600, s-maxage=3600"
+  "public, max-age=0, s-maxage=60"
 );
 
 return res.status(200).send(image);
