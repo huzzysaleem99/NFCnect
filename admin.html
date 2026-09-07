@@ -1286,7 +1286,7 @@ async function removeProfilePhoto() {
     status.innerText =
         "Removing photo...";
 
-    // Get the customer's current photo URL
+    // Get current photo URL
     const { data: customer, error: fetchError } =
         await supabaseClient
             .from("Profiles")
@@ -1295,7 +1295,11 @@ async function removeProfilePhoto() {
             .single();
 
     if (fetchError) {
-        console.error(fetchError);
+
+        console.error(
+            "CUSTOMER FETCH ERROR:",
+            fetchError
+        );
 
         status.innerText =
             "Unable to find customer photo.";
@@ -1306,57 +1310,56 @@ async function removeProfilePhoto() {
     const photoUrl =
         customer?.profile_photo;
 
-    // If a photo exists, delete the actual file from Storage
+    // Delete actual file from Supabase Storage
     if (photoUrl) {
 
-        try {
+        const filePath =
+            getStoragePathFromUrl(photoUrl);
 
-            const marker =
-                "/profile-photos/";
+        console.log(
+            "Photo URL:",
+            photoUrl
+        );
 
-            const markerPosition =
-                photoUrl.indexOf(marker);
+        console.log(
+            "Deleting Storage path:",
+            filePath
+        );
 
-            if (markerPosition !== -1) {
-
-                const filePath =
-                    decodeURIComponent(
-                        photoUrl.substring(
-                            markerPosition + marker.length
-                        )
-                    );
-
-                const { error: storageError } =
-                    await supabaseClient.storage
-                        .from("profile-photos")
-                        .remove([filePath]);
-
-                if (storageError) {
-                    console.error(
-                        "STORAGE DELETE ERROR:",
-                        storageError
-                    );
-
-                    status.innerText =
-                        "Unable to delete photo from storage: " +
-                        storageError.message;
-
-                    return;
-                }
-            }
-
-        } catch (error) {
-
-            console.error(error);
+        if (!filePath) {
 
             status.innerText =
-                "Unable to delete photo.";
+                "Unable to identify photo file.";
 
             return;
         }
+
+        const { data: deletedFiles, error: storageError } =
+            await supabaseClient.storage
+                .from("profile-photos")
+                .remove([filePath]);
+
+        if (storageError) {
+
+            console.error(
+                "STORAGE DELETE ERROR:",
+                storageError
+            );
+
+            status.innerText =
+                "Unable to delete photo from storage: " +
+                storageError.message;
+
+            return;
+        }
+
+        console.log(
+            "Deleted file:",
+            deletedFiles
+        );
     }
 
-    // Remove the photo URL from the customer profile
+    // Remove URL from Profiles table
     const { error: updateError } =
         await supabaseClient
             .from("Profiles")
@@ -1367,7 +1370,10 @@ async function removeProfilePhoto() {
 
     if (updateError) {
 
-        console.error(updateError);
+        console.error(
+            "PROFILE UPDATE ERROR:",
+            updateError
+        );
 
         status.innerText =
             "Unable to remove photo: " +
@@ -1376,14 +1382,14 @@ async function removeProfilePhoto() {
         return;
     }
 
-    // Clear admin-page preview
-    document.getElementById(
-        "profilePhotoPreview"
-    ).src = "";
+    // Clear admin preview
+    const preview =
+        document.getElementById(
+            "profilePhotoPreview"
+        );
 
-    document.getElementById(
-        "profilePhotoPreview"
-    ).style.display = "none";
+    preview.src = "";
+    preview.style.display = "none";
 
     document.getElementById(
         "profilePhoto"
