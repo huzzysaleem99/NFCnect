@@ -96,6 +96,20 @@ export default async function handler(req, res) {
       "public, max-age=0, s-maxage=60"
     );
 
+    html = html.replace(
+  "</body>",
+  `
+  <script>
+    history.replaceState(
+      {},
+      "",
+      "/c/${encodeURIComponent(cardId)}"
+    );
+  </script>
+  </body>
+  `
+);
+
     return res.status(200).send(html);
 
   } catch (error) {
