@@ -415,6 +415,16 @@ button:hover {
             border:1px solid rgba(201,162,39,0.45);
         "
     >
+
+   <button
+    type="button"
+    id="removePhotoButton"
+    class="secondary-button"
+    style="display:none;"
+>
+    REMOVE PHOTO
+</button>
+           
 </div>
 
 </div>
@@ -837,20 +847,32 @@ document
     document.getElementById("cardId").value =
         data.card_id;
 
-        const profilePhotoPreview =
+     const profilePhotoPreview =
     document.getElementById("profilePhotoPreview");
 
+const removePhotoButton =
+    document.getElementById("removePhotoButton");
+
 if (data.profile_photo) {
+
     profilePhotoPreview.src =
         data.profile_photo;
 
     profilePhotoPreview.style.display =
         "block";
+
+    removePhotoButton.style.display =
+        "block";
+
 } else {
+
     profilePhotoPreview.src =
         "";
 
     profilePhotoPreview.style.display =
+        "none";
+
+    removePhotoButton.style.display =
         "none";
 }
 
