@@ -849,9 +849,9 @@ document
     const fileInput =
         document.getElementById("profilePhoto");
 
-    if (!fileInput) {
-        throw new Error("Profile photo input was not found.");
-    }
+  if (!file) {
+    return null;
+}
 
     const file =
         fileInput.files[0];
