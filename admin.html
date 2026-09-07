@@ -1175,7 +1175,7 @@ profilePhotoInput.addEventListener("change", function () {
     profilePhotoPreview.style.display = "block";
 });
 
-    async function removeProfilePhoto() {
+async function removeProfilePhoto() {
 
     const status =
         document.getElementById("status");
@@ -1192,7 +1192,78 @@ profilePhotoInput.addEventListener("change", function () {
     status.innerText =
         "Removing photo...";
 
-    const { error } =
+    // Get the customer's current photo URL
+    const { data: customer, error: fetchError } =
+        await supabaseClient
+            .from("Profiles")
+            .select("profile_photo")
+            .eq("card_id", cardId)
+            .single();
+
+    if (fetchError) {
+        console.error(fetchError);
+
+        status.innerText =
+            "Unable to find customer photo.";
+
+        return;
+    }
+
+    const photoUrl =
+        customer?.profile_photo;
+
+    // If a photo exists, delete the actual file from Storage
+    if (photoUrl) {
+
+        try {
+
+            const marker =
+                "/profile-photos/";
+
+            const markerPosition =
+                photoUrl.indexOf(marker);
+
+            if (markerPosition !== -1) {
+
+                const filePath =
+                    decodeURIComponent(
+                        photoUrl.substring(
+                            markerPosition + marker.length
+                        )
+                    );
+
+                const { error: storageError } =
+                    await supabaseClient.storage
+                        .from("profile-photos")
+                        .remove([filePath]);
+
+                if (storageError) {
+                    console.error(
+                        "STORAGE DELETE ERROR:",
+                        storageError
+                    );
+
+                    status.innerText =
+                        "Unable to delete photo from storage: " +
+                        storageError.message;
+
+                    return;
+                }
+            }
+
+        } catch (error) {
+
+            console.error(error);
+
+            status.innerText =
+                "Unable to delete photo.";
+
+            return;
+        }
+    }
+
+    // Remove the photo URL from the customer profile
+    const { error: updateError } =
         await supabaseClient
             .from("Profiles")
             .update({
@@ -1200,34 +1271,37 @@ profilePhotoInput.addEventListener("change", function () {
             })
             .eq("card_id", cardId);
 
-    if (error) {
-        console.error(error);
+    if (updateError) {
+
+        console.error(updateError);
 
         status.innerText =
-            "Unable to remove photo: " + error.message;
+            "Unable to remove photo: " +
+            updateError.message;
 
         return;
     }
 
-    document.getElementById("profilePhotoPreview").src =
-        "";
+    // Clear admin-page preview
+    document.getElementById(
+        "profilePhotoPreview"
+    ).src = "";
 
-    document.getElementById("profilePhotoPreview").style.display =
-        "none";
+    document.getElementById(
+        "profilePhotoPreview"
+    ).style.display = "none";
 
-    document.getElementById("profilePhoto").value =
-        "";
+    document.getElementById(
+        "profilePhoto"
+    ).value = "";
 
-    document.getElementById("removePhotoButton").style.display =
-        "none";
+    document.getElementById(
+        "removePhotoButton"
+    ).style.display = "none";
 
     status.innerText =
         "Photo removed successfully.";
 }
-
-document
-    .getElementById("removePhotoButton")
-    .addEventListener("click", removeProfilePhoto);
     
 checkAdminSession();
 
