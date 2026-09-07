@@ -1,5 +1,5 @@
 {
-    "dependencies": {
-        "@vercel/og": "latest"
-    }
+  "dependencies": {
+    "sharp": "latest"
+  }
 }
