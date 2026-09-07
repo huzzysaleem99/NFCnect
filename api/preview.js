@@ -61,6 +61,7 @@ export default async function handler(req, res) {
     const name = profile.full_name || "VEUQO";
     const jobTitle = profile.job_title || "";
     const company = profile.company || "";
+    const profilePhoto = profile.profile_photo || "";
 
     const canvas = createCanvas(1200, 630);
     const ctx = canvas.getContext("2d");
