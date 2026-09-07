@@ -97,25 +97,25 @@ export default async function handler(req, res) {
     );
 
     // Initial circle
-    ctx.beginPath();
-    ctx.arc(190, 315, 90, 0, Math.PI * 2);
+ctx.beginPath();
+ctx.arc(190, 315, 90, 0, Math.PI * 2);
 
-    ctx.fillStyle = "#080808";
-    ctx.fill();
+ctx.fillStyle = "#080808";
+ctx.fill();
 
-    ctx.strokeStyle = "#D6B777";
-    ctx.lineWidth = 3;
-    ctx.stroke();
+ctx.strokeStyle = "#D6B777";
+ctx.lineWidth = 3;
+ctx.stroke();
 
-    // Initial
-    ctx.fillStyle = "#D6B777";
-    ctx.font = "64px Inter";
-    ctx.textAlign = "center";
-    ctx.fillText(
-      name.charAt(0).toUpperCase(),
-      190,
-      338
-    );
+// Initial
+ctx.fillStyle = "#D6B777";
+ctx.font = "64px Inter";
+ctx.textAlign = "center";
+ctx.fillText(
+  name.charAt(0).toUpperCase(),
+  190,
+  338
+);
 
     // Name
     ctx.textAlign = "left";
