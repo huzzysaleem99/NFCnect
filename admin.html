@@ -835,6 +835,23 @@ document
     document.getElementById("cardId").value =
         data.card_id;
 
+        const profilePhotoPreview =
+    document.getElementById("profilePhotoPreview");
+
+if (data.profile_photo) {
+    profilePhotoPreview.src =
+        data.profile_photo;
+
+    profilePhotoPreview.style.display =
+        "block";
+} else {
+    profilePhotoPreview.src =
+        "";
+
+    profilePhotoPreview.style.display =
+        "none";
+}
+
     manageStatus.innerText =
         "Customer loaded successfully.";
 }
@@ -1019,6 +1036,17 @@ document
     status.innerText =
         "Saving changes...";
 
+        let profilePhotoUrl = null;
+
+try {
+    profilePhotoUrl =
+        await uploadProfilePhoto(cardId);
+} catch (error) {
+    status.innerText =
+        "Photo upload failed: " + error.message;
+    return;
+}
+
     const updates = {
         full_name:
             document.getElementById("fullName").value.trim(),
@@ -1047,6 +1075,11 @@ document
         facebook:
             document.getElementById("facebook").value.trim() || null
     };
+
+        if (profilePhotoUrl) {
+    updates.profile_photo =
+        profilePhotoUrl;
+}
 
     const { error } =
         await supabaseClient
