@@ -2035,6 +2035,14 @@ if (person.facebook) {
     );
 }
 
+vCardLines.push(
+    "END:VCARD"
+);
+
+return vCardLines.join("\r\n");
+
+}
+
     /*
     ========================================
     SAVE CONTACT BUTTON
