@@ -2007,138 +2007,33 @@
 
 
 
-        /*
-        SOCIAL LINKS
-        */
+/*
+SOCIAL LINKS
+*/
 
-        const socialLinks =
-            [];
+if (person.linkedin) {
+    vCardLines.push(
+        `URL;TYPE=LinkedIn:${escapeVCard(
+            person.linkedin
+        )}`
+    );
+}
 
+if (person.instagram) {
+    vCardLines.push(
+        `URL;TYPE=Instagram:${escapeVCard(
+            person.instagram
+        )}`
+    );
+}
 
-        if (person.linkedin) {
-
-            socialLinks.push(
-                `LinkedIn: ${person.linkedin}`
-            );
-
-        }
-
-
-        if (person.instagram) {
-
-            socialLinks.push(
-                `Instagram: ${person.instagram}`
-            );
-
-        }
-
-
-        if (person.facebook) {
-
-            socialLinks.push(
-                `Facebook: ${person.facebook}`
-            );
-
-        }
-
-
-        if (
-            socialLinks.length > 0
-        ) {
-
-            vCardLines.push(
-
-                `NOTE:${escapeVCard(
-                    socialLinks.join("\n")
-                )}`
-
-            );
-
-        }
-
-
-
-        vCardLines.push(
-            "END:VCARD"
-        );
-
-
-
-        const vCard =
-            vCardLines.join(
-                "\r\n"
-            );
-
-
-
-        const blob =
-            new Blob(
-
-                [vCard],
-
-                {
-                    type:
-                        "text/vcard;charset=utf-8"
-                }
-
-            );
-
-
-
-        const url =
-            URL.createObjectURL(
-                blob
-            );
-
-
-
-        const downloadLink =
-            document.createElement(
-                "a"
-            );
-
-
-
-        downloadLink.href =
-            url;
-
-
-
-        downloadLink.download =
-            `${person.full_name || "contact"}.vcf`;
-
-
-
-        document.body.appendChild(
-            downloadLink
-        );
-
-
-
-        downloadLink.click();
-
-
-
-        document.body.removeChild(
-            downloadLink
-        );
-
-
-
-        setTimeout(
-            () => {
-
-                URL.revokeObjectURL(
-                    url
-                );
-
-            },
-            1000
-        );
-
-    }
-
-
+if (person.facebook) {
+    vCardLines.push(
+        `URL;TYPE=Facebook:${escapeVCard(
+            person.facebook
+        )}`
+    );
+}
 
     /*
     ========================================
